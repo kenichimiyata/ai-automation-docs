@@ -27,6 +27,7 @@ AI Automation Platform で蓄積されたナレッジを公開しています。
 
 | ページ | 内容 |
 |--------|------|
+| **[Copilot 協働実践例](copilot-workflow-example)** | **🎯 実際のやり取り・スクリーンショット自動化・Mermaid図作成** ⭐ NEW |
 | [AI 継続開発ガイド](continuity-guide) | AI が記憶を引き継ぐ方法 |
 | [AI 協働開発ガイド](ai-collaboration-guide) | AI と人間の開発哲学 |
 | [記憶回復システム](memory-restore-guide) | AI の記憶をリセット・回復する方法 |

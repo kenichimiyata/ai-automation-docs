@@ -51,6 +51,7 @@ graph TB
 | ページ | 内容 |
 |--------|------|
 | **[10年の歴史](wiki/history)** | **📜 2013-2026年 - bpmchat.com から AI 自動化へ** ⭐ NEW |
+| **[Copilot 協働実践例](wiki/copilot-workflow-example)** | **🎯 実際のやり取り・スクリーンショット自動化・Mermaid図** ⭐ NEW |
 | [Repository Guide](wiki/repository-guide) | 📁 リポジトリ構成・使い分け完全ガイド |
 | [Implementation Plan](implementation-plan) | 📋 実装計画書（Milestone 1-3） |
 | [ナレッジベース一覧](wiki/) | wiki トップ |

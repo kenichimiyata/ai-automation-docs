@@ -156,6 +156,7 @@ graph LR
 - [**Workflow Design**](https://github.com/bpmbox/ai-automation-platform/wiki/Workflow-Design) - BPMN 代替仕様
 
 ### 🤖 AI Collaboration
+- [**Copilot Workflow Example**](docs/wiki/copilot-workflow-example.md) - 🎯 実際のやり取り・スクリーンショット自動化・Mermaid図作成 ⭐ NEW
 - [**AI Collaboration Guide**](docs/wiki/ai-collaboration-guide.md) - AI との協働開発パターン
 - [**Continuity Guide**](docs/wiki/continuity-guide.md) - AI への完全引き継ぎ方法
 - [**Memory Restore**](docs/wiki/memory-restore-guide.md) - AI 記憶回復システム
