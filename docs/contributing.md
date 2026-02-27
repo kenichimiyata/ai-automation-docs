@@ -46,10 +46,10 @@ PR が自動で届く
 
 ## アーキテクチャを理解する
 
-- [システム設計](system-architecture) — データフロー・DB設計
-- [クイックスタート](quick-start-guide) — 30分で動かす
-- [AI 協働開発ガイド](ai-collaboration-guide) — AI と一緒に開発する哲学
-- [プラットフォーム状態](platform-status) — 現在の進捗
+- [システム設計](wiki/system-architecture) — データフロー・DB設計
+- [クイックスタート](wiki/quick-start-guide) — 30分で動かす
+- [AI 協働開発ガイド](wiki/ai-collaboration-guide) — AI と一緒に開発する哲学
+- [プラットフォーム状態](wiki/platform-status) — 現在の進捗
 
 ## コピ（AI マネージャー）について
 
