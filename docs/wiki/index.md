@@ -16,6 +16,7 @@ AUTOCREATE プロジェクトで蓄積されたナレッジを公開していま
 | [AI 協働開発ガイド](ai-collaboration-guide) | AI と人間の開発哲学 |
 | [開発ガイドライン](development-guidelines) | 命名規則・実装ルール |
 | [記憶回復システム](memory-restore-guide) | AI の記憶をリセット・回復する方法 |
+| [Submodule 一覧](submodule-list) | 全リポジトリ・サブモジュール構成図 |
 
 ---
 
