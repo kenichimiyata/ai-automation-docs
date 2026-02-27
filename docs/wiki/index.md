@@ -17,6 +17,7 @@ AUTOCREATE プロジェクトで蓄積されたナレッジを公開していま
 | [開発ガイドライン](development-guidelines) | 命名規則・実装ルール |
 | [記憶回復システム](memory-restore-guide) | AI の記憶をリセット・回復する方法 |
 | [Submodule 一覧](submodule-list) | 全リポジトリ・サブモジュール構成図 |
+| [Tech Stack & Architecture](tech-stack-architecture) | 全体アーキテクチャ図 (Mermaid) + サービス一覧 |
 
 ---
 
