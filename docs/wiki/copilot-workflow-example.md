@@ -30,7 +30,157 @@
 
 ---
 
-## 🚀 作業の流れ（実際のやり取り）
+## � ワークフロー図解
+
+### AI協働の実際のやり取り（シーケンス図）
+
+```mermaid
+sequenceDiagram
+    participant M as 👤 miyataken
+    participant C as 🤖 Copilot
+    participant API as 🔧 GitHub API
+    participant P as 📸 Playwright
+    participant G as 📦 Git
+
+    Note over M,C: Phase 1: Project 作成
+    M->>C: "projectつくってみて"
+    C->>API: GraphQL mutation (createProjectV2)
+    API-->>C: Project #6 created
+    C->>API: GraphQL mutation (addProjectV2ItemById) x9
+    API-->>C: 9 Issues added
+    C->>M: ✅ Project 完成
+
+    Note over M,C: Phase 2: ストーリー重視へ転換
+    M->>C: "ストーリー重視でいこう"
+    C->>C: README.md 全面書き直し
+    C->>G: commit + push (7e903f0)
+    C->>M: ✅ 10年の旅を語るREADME
+
+    Note over M,C: Phase 3: noVNC Gateway 発見
+    M->>C: "これが novnc gateway で AI用のOSだね"
+    C->>C: History.md 作成
+    C->>G: commit + push (a995f40)
+    C->>M: ✅ 哲学的ブレイクスルー文書化
+
+    Note over M,C: Phase 4: Visual Documentation
+    M->>C: "そのキャプチャーとあとmermaidものせていこうか"
+    C->>C: architecture-diagram.md (4 Mermaid 図)
+    C->>P: screenshot_page (Supabase CRUD)
+    P-->>C: supabase-crud.png
+    C->>P: screenshot_page (DHTMLX Navigator)
+    P-->>C: dhtmlx-navigator.png
+    C->>G: commit + push (c7a718f, 2b14aa6)
+    C->>M: ✅ Visual Documentation 完成
+
+    Note over M,C: Phase 5: 実践例作成
+    M->>C: "俺とこぴのやりとりもwikiにしていこう"
+    C->>C: copilot-workflow-example.md
+    C->>G: commit + push (f50ad95)
+    C->>M: ✅ 実践ガイド公開
+```
+
+### 作業フロー（フローチャート）
+
+```mermaid
+flowchart TD
+    Start([開始: バラバラの情報]) --> A{何を作る?}
+    A -->|Project管理| B[GitHub Project 作成]
+    B --> C[GraphQL API 使用]
+    C --> D[9 Issues 追加]
+    
+    D --> E{方針は?}
+    E -->|技術説明| F[❌ 伝わらない]
+    E -->|ストーリー| G[✅ 10年の旅]
+    
+    G --> H[README 全面書き直し]
+    H --> I[bpmchat.com 原点]
+    I --> J[noVNC Gateway 発見]
+    
+    J --> K{何が足りない?}
+    K -->|視覚要素| L[Visual Documentation]
+    
+    L --> M[Mermaid 図作成]
+    L --> N[Screenshot 自動撮影]
+    
+    M --> O[architecture-diagram.md]
+    N --> P[Playwright 実行]
+    
+    O --> Q[Git Commit]
+    P --> Q
+    
+    Q --> R{エラー?}
+    R -->|404 画像| S[パス修正: docs/images → images]
+    R -->|Token露出| T[マスク処理]
+    R -->|No error| U[Push]
+    
+    S --> U
+    T --> U
+    
+    U --> V[GitHub Pages 公開]
+    
+    V --> W{他の人の参考に?}
+    W -->|Yes| X[実践例作成]
+    X --> Y[copilot-workflow-example.md]
+    Y --> Z([完成: 公開ドキュメント])
+    
+    style Start fill:#e1f5ff
+    style G fill:#d4edda
+    style J fill:#fff3cd
+    style L fill:#d1ecf1
+    style Z fill:#d4edda
+```
+
+### 状態遷移図（各フェーズ）
+
+```mermaid
+stateDiagram-v2
+    [*] --> Planning: "projectつくってみて"
+    
+    Planning --> Organizing: Project #6 作成<br/>9 Issues 追加
+    
+    Organizing --> Storytelling: "ストーリー重視でいこう"
+    
+    Storytelling --> Philosophy: README 書き直し<br/>10年の旅
+    
+    Philosophy --> Visualization: "novnc gateway"<br/>AI用OS発見
+    
+    Visualization --> Implementation: "キャプチャーとmermaid"
+    
+    Implementation --> Testing: Playwright 実行<br/>Git push
+    
+    Testing --> Fixing: 404 / Token 露出
+    Fixing --> Testing: パス修正<br/>マスク処理
+    
+    Testing --> Documentation: エラーなし
+    
+    Documentation --> Published: "やりとりもwikiに"<br/>実践例作成
+    
+    Published --> [*]: GitHub Pages 公開✅
+    
+    note right of Planning
+        GraphQL API
+        gh CLI 制限回避
+    end note
+    
+    note right of Storytelling
+        技術 → 物語
+        失敗も資産
+    end note
+    
+    note right of Visualization
+        Mermaid x4
+        Screenshot x2
+    end note
+    
+    note right of Documentation
+        他の人の参考
+        テンプレート化
+    end note
+```
+
+---
+
+## �🚀 作業の流れ（実際のやり取り）
 
 ### 1️⃣ GitHub Project 作成
 
