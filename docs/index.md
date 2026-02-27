@@ -5,7 +5,7 @@ title: Home
 
 # AI Automation Platform
 
-Welcome to the official documentation for the AI Automation Platform.
+GitHub Issue を書くだけで AI が自動実装する、オープンソースの AI 自動化プラットフォームです。
 
 ## What is this?
 
@@ -20,13 +20,30 @@ A system that automatically:
 - [Architecture](architecture)
 - [Milestone 1 - Supabase Setup](milestone-1)
 - [Milestone 2 - GitHub Actions](milestone-2)
-- [Milestone 3 - Copilot Bridge](milestone-3)
+- [Milestone 3 - VS Code Extension](milestone-3)
 - [Setup Guide](setup)
 
-## Progress Dashboard
+## 📚 Knowledge Base (Wiki)
 
-| Milestone | Status | Progress |
-|-----------|--------|----------|
-| 1. Supabase Infrastructure | ✅ COMPLETE | 100% |
-| 2. GitHub Actions | 🟡 IN PROGRESS | 40% |
-| 3. VS Code Copilot Bridge | ⏳ PLANNED | 0% |
+AUTOCREATE プロジェクトで蓄積されたナレッジ:
+
+| ページ | 内容 |
+|--------|------|
+| [ナレッジベース一覧](wiki/) | wiki トップ |
+| [プラットフォーム状態](wiki/platform-status) | 現在の進捗 |
+| [クイックスタート](wiki/quick-start-guide) | 30分で環境構築 |
+| [システム設計](wiki/system-architecture) | アーキテクチャ詳細 |
+| [AI 協働開発](wiki/ai-collaboration-guide) | AI と人間の開発哲学 |
+| [継続開発ガイド](wiki/continuity-guide) | AI 記憶引き継ぎ |
+
+## 🤝 仲間募集
+
+[プロジェクトに参加する →](contributing)
+
+AI エンジニア・フロントエンド・ドキュメント・アイデアマン、どなたでも歓迎です！
+
+---
+
+[GitHub](https://github.com/kenichimiyata/ai-automation-dashboard) |
+[Roadmap](https://github.com/users/kenichimiyata/projects/6) |
+[仲間募集](contributing)
