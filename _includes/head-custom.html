@@ -1,0 +1,15 @@
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({ startOnLoad: false, theme: 'default' });
+
+  document.addEventListener('DOMContentLoaded', function () {
+    // GitHub Pages renders ```mermaid as <code class="language-mermaid">
+    document.querySelectorAll('code.language-mermaid').forEach(function(el) {
+      var container = document.createElement('div');
+      container.className = 'mermaid';
+      container.textContent = el.textContent;
+      el.parentNode.replaceWith(container);
+    });
+    mermaid.run();
+  });
+</script>
