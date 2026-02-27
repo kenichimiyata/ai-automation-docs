@@ -27,7 +27,8 @@ A system that automatically:
 
 | ページ | 内容 |
 |--------|------|
-| [Repository Guide](wiki/repository-guide) | 📁 リポジトリ構成・使い分け完全ガイド ⭐ NEW |
+| **[10年の歴史](wiki/history)** | **📜 2013-2026年 - bpmchat.com から AI 自動化へ** ⭐ NEW |
+| [Repository Guide](wiki/repository-guide) | 📁 リポジトリ構成・使い分け完全ガイド |
 | [Implementation Plan](implementation-plan) | 📋 実装計画書（Milestone 1-3） |
 | [ナレッジベース一覧](wiki/) | wiki トップ |
 | [プラットフォーム状態](wiki/platform-status) | 現在の進捗 |
