@@ -135,8 +135,8 @@ graph LR
 ```
 
 **📸 スクリーンショット:**
-- [Supabase CRUD Manager](docs/images/supabase-crud.png) - 9 Issues 同期済み
-- [DHTMLX Navigator](docs/images/dhtmlx-navigator.png) - BPMN × n8n 統合（59 workflows）
+- [Supabase CRUD Manager](images/supabase-crud.png) - 9 Issues 同期済み
+- [DHTMLX Navigator](images/dhtmlx-navigator.png) - BPMN × n8n 統合（59 workflows）
 
 **📊 詳細な図:**
 - [Architecture Diagrams](docs/architecture-diagram) - システム全体・データフロー・noVNC Gateway

@@ -192,13 +192,13 @@ Browser Pages:
 ```javascript
 // Supabase CRUD
 await page.screenshot({ 
-  path: 'C:\\xampp\\htdocs\\ai-automation-docs\\docs\\images\\supabase-crud.png',
+  path: 'C:\\xampp\\htdocs\\ai-automation-docs\\images\\supabase-crud.png',
   fullPage: true 
 });
 
 // DHTMLX Navigator
 await page.screenshot({ 
-  path: 'C:\\xampp\\htdocs\\ai-automation-docs\\docs\\images\\dhtmlx-navigator.png',
+  path: 'C:\\xampp\\htdocs\\ai-automation-docs\\images\\dhtmlx-navigator.png',
   fullPage: true 
 });
 ```
@@ -283,12 +283,12 @@ await Promise.all([
 ```
 ai-automation-docs/
 ├── README.md（ストーリー重視・Visual Overview 追加）
+├── images/
+│   ├── supabase-crud.png（NEW - 9 Issues 表示）
+│   └── dhtmlx-navigator.png（NEW - BPMN フロー）
 ├── docs/
 │   ├── index.md（Quick Links 更新）
 │   ├── architecture-diagram.md（NEW - 4つの Mermaid 図）
-│   ├── images/
-│   │   ├── supabase-crud.png（NEW - 9 Issues 表示）
-│   │   └── dhtmlx-navigator.png（NEW - BPMN フロー）
 │   └── wiki/
 │       ├── history.md（2013-2026 詳細タイムライン）
 │       └── ...
