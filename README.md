@@ -63,7 +63,7 @@ GitHub Actions で自動化し、Supabase で状態を管理する。
 
 ## What is AI Automation Platform?
 
-**GitHub Issue 駆動型の AI 協働開発基盤**
+**GitHub Issue 駆動型の AI 協働開発基盤 + AI 専用 OS**
 
 ```
 人間（Issue 作成）
@@ -74,11 +74,16 @@ Supabase（Realtime 状態管理）
      ↓
 VS Code Copilot（AI 実装）
      ↓
+noVNC Gateway（AI 用仮想デスクトップ）
+     ↓
 完成したシステム
 ```
 
 従来の BPMS とは違い、**開発者のツール（GitHub, VS Code）の中で完結する。**  
-AI が常に隣にいて、一緒に作る。
+そして、**AI が noVNC を通じて「自分のPC」を持つ。**
+
+AI が常に隣にいて、一緒に作る。  
+いや、AI は「リモートワーカー」として、人間と同じ環境で働く。
 
 これが、10年越しの答えだ。
 
@@ -93,6 +98,7 @@ AI が常に隣にいて、一緒に作る。
 | **Data Layer** | Supabase (PostgreSQL + Realtime) | Issue 同期・状態管理・RLS |
 | **Pipeline** | GitHub Actions | Issue 作成 → Supabase 自動書き込み |
 | **Integration** | VS Code Copilot Bridge (Python) | Supabase Realtime → Copilot Chat |
+| **AI OS** | noVNC Gateway | AI 専用仮想デスクトップ・pyautogui 自動操作 |
 | **Workflow** | n8n (59 workflows) | 外部サービス連携 |
 | **Visualization** | HTML5 (dhtmlx, Mermaid) | BPMN × データ可視化 |
 
@@ -104,9 +110,10 @@ AI が常に隣にいて、一緒に作る。
 | チャット駆動 | Issue 駆動 |
 | SpreadSheet 中心 | PostgreSQL 中心 |
 | BPMS の画面作成 | GitHub Pages + Jekyll |
+| VirtualOffice（人間用） | noVNC Gateway（AI 用） |
 | "作って動かす" | "Issue 書いて AI が作る" |
 
-**変わったこと:** ツールを統合し、AI を中心に据えた  
+**変わったこと:** ツールを統合し、AI を中心に据え、**AI に専用 OS を与えた**  
 **変わらないこと:** 「自然に、対話的に、システムを作る」という夢
 
 ---
@@ -175,12 +182,22 @@ AI が常に隣にいて、一緒に作る。
 **元の構想（2013-2025）は [bpmchat.com](https://www.bpmchat.com/) で公開中。**
 
 - 🎤 音声入力 × チャット
-- 🏢 VirtualOffice（ビデオ会議 + 画面共有）
+- 🏢 **VirtualOffice**（ビデオ会議 + 画面共有） → **noVNC Gateway へ進化**
 - 📊 SpreadSheet × JIRA × AppSheet 統合
 - 🔄 ProcessMaker BPMS
 - 🤖 UiPath RPA
 
-**10年の実験記録が、そこにある。**
+**そして 2025年、決定的な発見:**
+> **noVNC + Gateway = AI 用の OS**
+
+**意味:**
+- VirtualOffice は「人間」のためのビデオ会議だった
+- noVNC Gateway は「AI」のための仮想デスクトップ
+- AI がブラウザを通じて、リモートワーカーのように働ける
+
+**これが bpmchat.com の真の完成形だった。**
+
+**10年の実験記録は [History](https://kenichimiyata.github.io/ai-automation-docs/wiki/history) で読めます。**
 
 ---
 
@@ -200,4 +217,8 @@ MIT License - 自由に使ってください。
 
 ---
 
-_"AIがAI自身をOSレベルで作成していく" — bpmchat.com より_
+_"AIがAI自身をOSレベルで作成していく"_  
+_— bpmchat.com より_
+
+_"そして 2025年、AI は本当に OS を手に入れた。"_  
+_— noVNC Gateway より_
