@@ -3,12 +3,13 @@
   mermaid.initialize({ startOnLoad: false, theme: 'default' });
 
   document.addEventListener('DOMContentLoaded', function () {
-    // GitHub Pages renders ```mermaid as <code class="language-mermaid">
-    document.querySelectorAll('code.language-mermaid').forEach(function(el) {
+    // Jekyll renders ```mermaid as <pre><code class="language-mermaid">
+    document.querySelectorAll('pre code.language-mermaid').forEach(function(code) {
+      var pre = code.parentNode; // the <pre> element
       var container = document.createElement('div');
       container.className = 'mermaid';
-      container.textContent = el.textContent;
-      el.parentNode.replaceWith(container);
+      container.textContent = code.textContent;
+      pre.parentNode.replaceChild(container, pre);
     });
     mermaid.run();
   });
