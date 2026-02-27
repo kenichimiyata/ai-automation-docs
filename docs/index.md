@@ -17,11 +17,34 @@ A system that automatically:
 
 ## Quick Links
 
-- [Architecture](architecture)
+- **[🏗️ Architecture Diagrams](architecture-diagram)** - システム全体図・データフロー・noVNC Gateway ⭐ NEW
+- [Architecture](architecture) - 技術詳細
 - [Milestone 1 - Supabase Setup](milestone-1)
 - [Milestone 2 - GitHub Actions](milestone-2)
 - [Milestone 3 - VS Code Extension](milestone-3)
 - [Setup Guide](setup)
+
+## 📊 Visual Overview
+
+**システムアーキテクチャ:**
+
+```mermaid
+graph TB
+    Human[👤 Developer<br/>Issue を書く] --> GitHub[📝 GitHub<br/>Issue + Actions]
+    GitHub --> Supabase[(🗄️ Supabase<br/>Realtime DB)]
+    Supabase --> Bridge[🐍 Python Bridge<br/>pyautogui]
+    Bridge --> Copilot[🤖 VS Code<br/>Copilot]
+    Copilot --> noVNC[🖥️ noVNC<br/>AI 専用 OS]
+    noVNC --> Done[✅ 完成]
+    
+    style Human fill:#e1f5ff
+    style GitHub fill:#d4edda
+    style Supabase fill:#f8d7da
+    style Copilot fill:#d1ecf1
+    style noVNC fill:#e7e8ea
+```
+
+**詳細は [Architecture Diagrams](architecture-diagram) へ**
 
 ## 📚 Knowledge Base (Wiki)
 

@@ -116,6 +116,31 @@ AI が常に隣にいて、一緒に作る。
 **変わったこと:** ツールを統合し、AI を中心に据え、**AI に専用 OS を与えた**  
 **変わらないこと:** 「自然に、対話的に、システムを作る」という夢
 
+### Visual Overview
+
+**システム全体図:**
+
+```mermaid
+graph LR
+    Human[👤 Human] -->|Issue| GitHub[📝 GitHub]
+    GitHub -->|Actions| Supabase[(🗄️ Supabase)]
+    Supabase -->|Realtime| Bridge[🐍 Bridge]
+    Bridge -->|Command| Copilot[🤖 Copilot]
+    Copilot -->|Control| noVNC[🖥️ noVNC<br/>AI OS]
+    noVNC -->|Execute| System[✅ System]
+    
+    style noVNC fill:#e7e8ea
+    style Copilot fill:#d1ecf1
+    style Supabase fill:#f8d7da
+```
+
+**📸 スクリーンショット:**
+- [Supabase CRUD Manager](docs/images/supabase-crud.png) - 9 Issues 同期済み
+- [DHTMLX Navigator](docs/images/dhtmlx-navigator.png) - BPMN × n8n 統合（59 workflows）
+
+**📊 詳細な図:**
+- [Architecture Diagrams](docs/architecture-diagram) - システム全体・データフロー・noVNC Gateway
+
 ---
 
 ## Documentation
