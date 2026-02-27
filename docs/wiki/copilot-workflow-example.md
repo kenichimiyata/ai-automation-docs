@@ -282,10 +282,29 @@ bpmchat.com - VirtualOffice, ProcessMaker, Workflow Designer...
 - これが **哲学的ブレイクスルー** だった！
 - pyautogui でAIがブラウザ操作できる = "AI用OS"
 
+**さらに重要な気づき（作業中の発言）:**
+```
+novncはもう１０年以上まえからのこうそう
+
+ただつかいがってがとおもっていたが　silkewayか
+これは現実的になったとも
+```
+
+**意味:**
+- **noVNC 自体は10年以上前から知っていた** → でも使い勝手に懸念があった
+- **Gateway（silkeway）の登場** → noVNC が実用的になった
+- **技術は存在していた。足りなかったのは「組み合わせ方」だった。**
+
+**タイムライン:**
+- 2013年頃: noVNC 存在を知る → 使い勝手に懸念 → 見送り
+- 2015-2024: VirtualOffice（人間用）で Video + Screen Sharing
+- 2025年: Gateway 出現 → noVNC が「AI用OS」として現実的に 💡
+
 **ドキュメント更新:**
 - README に "The Legacy" セクション追加
 - noVNC Gateway をアーキテクチャの中心に配置
 - Evolution Timeline に追加
+- History.md に10年以上にわたる洞察を記録
 
 ---
 
