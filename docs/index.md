@@ -35,6 +35,7 @@ AUTOCREATE プロジェクトで蓄積されたナレッジ:
 | [システム設計](wiki/system-architecture) | アーキテクチャ詳細 |
 | [AI 協働開発](wiki/ai-collaboration-guide) | AI と人間の開発哲学 |
 | [継続開発ガイド](wiki/continuity-guide) | AI 記憶引き継ぎ |
+| [Tech Stack 全体図](wiki/tech-stack-architecture) | Mermaid アーキテクチャ図・全サービス一覧 |
 
 ## 🤝 仲間募集
 
