@@ -25,10 +25,10 @@ A system that automatically:
 
 ## 📚 Knowledge Base (Wiki)
 
-AUTOCREATE プロジェクトで蓄積されたナレッジ:
-
 | ページ | 内容 |
 |--------|------|
+| [Repository Guide](wiki/repository-guide) | 📁 リポジトリ構成・使い分け完全ガイド ⭐ NEW |
+| [Implementation Plan](implementation-plan) | 📋 実装計画書（Milestone 1-3） |
 | [ナレッジベース一覧](wiki/) | wiki トップ |
 | [プラットフォーム状態](wiki/platform-status) | 現在の進捗 |
 | [クイックスタート](wiki/quick-start-guide) | 30分で環境構築 |

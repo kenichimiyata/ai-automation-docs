@@ -36,11 +36,17 @@ Copilot Chat
 
 ## Repositories
 
-| Repository | Purpose |
-|------------|---------|
-| [ai-automation-docs](https://github.com/kenichimiyata/ai-automation-docs) | This repo - public docs |
-| [ai-automation-dashboard](https://github.com/kenichimiyata/ai-automation-dashboard) | Implementation & GitHub Actions |
-| [ai-automation-platform](https://github.com/bpmbox/ai-automation-platform) | Organization hub |
+| Repository | Purpose | Status |
+|------------|---------|--------|
+| **[ai-automation-docs](https://github.com/kenichimiyata/ai-automation-docs)** | **🌟 Main Repository**<br>- Public documentation<br>- Wiki<br>- Supabase schemas<br>- Implementation plans | Active |
+| [ai-automation-dashboard](https://github.com/kenichimiyata/ai-automation-dashboard) | 🔧 Implementation Hub<br>- GitHub Actions<br>- Issue tracking<br>- Automation workflows | Active |
+
+### Legacy (Archived)
+- ~~[ai-automation-platform](https://github.com/bpmbox/ai-automation-platform)~~ → Migrated to ai-automation-docs
+
+### Management Tools
+- **GitHub Projects:** [kenichimiyata/projects/6](https://github.com/users/kenichimiyata/projects/6)
+- **Supabase Dashboard:** [rootomzbucovwdqsscqd](https://supabase.com/dashboard/project/rootomzbucovwdqsscqd)
 
 ## Status
 
