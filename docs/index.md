@@ -50,17 +50,17 @@ graph TB
 
 | ページ | 内容 |
 |--------|------|
-| **[10年の歴史](wiki/history)** | **📜 2013-2026年 - bpmchat.com から AI 自動化へ** ⭐ NEW |
-| **[Copilot 協働実践例](wiki/copilot-workflow-example)** | **🎯 実際のやり取り・スクリーンショット自動化・Mermaid図** ⭐ NEW |
-| [Repository Guide](wiki/repository-guide) | 📁 リポジトリ構成・使い分け完全ガイド |
-| [Implementation Plan](implementation-plan) | 📋 実装計画書（Milestone 1-3） |
-| [ナレッジベース一覧](wiki/) | wiki トップ |
-| [プラットフォーム状態](wiki/platform-status) | 現在の進捗 |
-| [クイックスタート](wiki/quick-start-guide) | 30分で環境構築 |
-| [システム設計](wiki/system-architecture) | アーキテクチャ詳細 |
-| [AI 協働開発](wiki/ai-collaboration-guide) | AI と人間の開発哲学 |
-| [継続開発ガイド](wiki/continuity-guide) | AI 記憶引き継ぎ |
-| [Tech Stack 全体図](wiki/tech-stack-architecture) | Mermaid アーキテクチャ図・全サービス一覧 |
+| **[10年の歴史](history)** | **📜 2013-2026年 - bpmchat.com から AI 自動化へ** ⭐ NEW |
+| **[Copilot 協働実践例](copilot-workflow-example)** | **🎯 実際のやり取り・スクリーンショット自動化・Mermaid図** ⭐ NEW |
+| [Repository Guide](repository-guide) | 📁 リポジトリ構成・使い分け完全ガイド |
+| [Implementation Plan](../implementation-plan) | 📋 実装計画書（Milestone 1-3） |
+| [ナレッジベース一覧](./) | wiki トップ |
+| [プラットフォーム状態](platform-status) | 現在の進捗 |
+| [クイックスタート](quick-start-guide) | 30分で環境構築 |
+| [システム設計](system-architecture) | アーキテクチャ詳細 |
+| [AI 協働開発](ai-collaboration-guide) | AI と人間の開発哲学 |
+| [継続開発ガイド](continuity-guide) | AI 記憶引き継ぎ |
+| [Tech Stack 全体図](tech-stack-architecture) | Mermaid アーキテクチャ図・全サービス一覧 |
 
 ## 🤝 仲間募集
 
