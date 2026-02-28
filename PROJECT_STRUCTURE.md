@@ -38,13 +38,30 @@ C:\xampp\htdocs\
 │   ├── AUTOCREATE/
 │   │   ├── SupabaseCopilotBridge.py    # VS Code Copilot自動連携
 │   │   └── supabase_to_vscode_chat.py
-│   └── AUTOCREATE.wiki/                # 重要ナレッジベース ⭐
-│       ├── Home.md
-│       ├── Continuity-Guide.md         # AI継続開発ガイド
-│       ├── System-Architecture.md
-│       ├── ai-memory/                  # JSON形式AIメモリ
-│       ├── knowledge-base/
-│       └── conversation-logs/
+│   ├── AUTOCREATE.wiki/                # 重要ナレッジベース ⭐
+│   │   ├── Home.md
+│   │   ├── Continuity-Guide.md         # AI継続開発ガイド
+│   │   ├── System-Architecture.md
+│   │   ├── ai-memory/                  # JSON形式AIメモリ
+│   │   ├── knowledge-base/
+│   │   └── conversation-logs/
+│   └── clasp/                          # 🔑 GAS開発ツール集（超重要）
+│       ├── workflow/                   # clasp管理GASプロジェクト
+│       │   ├── .clasp.json             # GASプロジェクト設定
+│       │   ├── appsscript.json         # GASマニフェスト
+│       │   ├── github.js               # GitHub API統合
+│       │   ├── google_chat.js          # Google Chat連携
+│       │   ├── firebase.js             # Firebase統合
+│       │   ├── line.html               # LINE Bot UI
+│       │   └── gradio.html             # Gradio統合UI
+│       ├── gas-frontend/               # GASフロントエンド開発
+│       ├── spreadsheet-project/        # Spreadsheet連携プロジェクト
+│       ├── chrome-ocr-sidebar/         # Chrome拡張（OCR）
+│       ├── phprunner-api-generator-gas/# PHPRunner API生成
+│       ├── cloudrun-n8n/               # Cloud Run n8n設定
+│       ├── README.md                   # clasp全体ドキュメント
+│       ├── SYSTEM_ARCHITECTURE.md      # claspシステム設計
+│       └── UNIVERSAL_API_GUIDE.md      # 汎用API使用ガイド
 │
 ├── 📊 n8n_workflows/                    # n8n可視化・管理
 │   ├── n8n_mermaid_dash.html
@@ -184,7 +201,169 @@ https://script.google.com/macros/s/AKfycbzOFStOJRdYblPXloslKV0rDmzP24aO9uQuudQn_
 
 ---
 
-## 🐍 Python スクリプト群
+## � clasp - Google Apps Script開発環境（超重要）
+
+### clasp とは？
+**Command Line Apps Script Projects** - Google Apps Scriptをローカルで開発・管理するための公式CLIツール
+
+**パス:** `C:\xampp\htdocs\localProject\clasp\`
+
+### 🎯 主な用途
+1. **GASコードのバージョン管理** - ローカルGit管理、GitHub連携
+2. **複数人開発** - コードレビュー、マージ、ブランチ管理
+3. **自動デプロイ** - CI/CD、GitHub Actionsとの統合
+4. **TypeScript開発** - 型安全なGAS開発
+5. **プロジェクト管理** - 複数GASプロジェクトの一元管理
+
+### 📂 clasp主要プロジェクト
+
+#### 1. workflow/ - 統合ワークフロープロジェクト
+**Script ID:** `196fU31y5azfVbp7F2I4wHW_31zZj343fMe-HjdhEDPgcLu1VCMQJyVqq`
+
+**主要ファイル:**
+- `.clasp.json` - GASプロジェクト設定（scriptId, rootDir）
+- `appsscript.json` - GASマニフェスト（timeZone, dependencies, oauthScopes）
+- `github.js` - GitHub API統合（Issue作成、PR管理）
+- `google_chat.js` - Google Chat通知・Bot連携
+- `firebase.js` - Firebase Realtime Database/Firestore
+- `line.html` - LINE Bot UI・Webhook処理
+- `gradio.html` - Gradio UI統合
+- `spreadsheet.js` - Google Spreadsheet操作
+
+**統合サービス:**
+- GitHub API
+- Google Chat Webhook
+- Firebase
+- LINE Messaging API
+- Gradio
+- Hasura GraphQL
+
+#### 2. gas-frontend/ - GASフロントエンド開発
+Webアプリ用HTML/CSS/JavaScript開発環境
+
+#### 3. spreadsheet-project/ - Spreadsheet連携
+Google Spreadsheet専用マクロ・カスタム関数
+
+#### 4. chrome-ocr-sidebar/ - Chrome拡張機能
+OCR機能付きサイドバー拡張（GAS連携）
+
+#### 5. phprunner-api-generator-gas/ - PHPRunner API生成
+PHPRunnerプロジェクトからGAS API自動生成ツール
+
+#### 6. cloudrun-n8n/ - Cloud Run n8n設定
+n8nのCloud Runデプロイ設定ファイル
+
+### 🛠️ clasp コマンド一覧
+
+| コマンド | 用途 | 例 |
+|---------|------|-----|
+| `clasp login` | Google認証 | `clasp login` |
+| `clasp create` | 新規GASプロジェクト作成 | `clasp create --type standalone --title "MyProject"` |
+| `clasp clone` | 既存プロジェクトをローカルにクローン | `clasp clone <scriptId>` |
+| `clasp push` | ローカル変更をGASにアップロード | `clasp push` |
+| `clasp pull` | GASの最新版をローカルにダウンロード | `clasp pull` |
+| `clasp open` | ブラウザでGASエディタを開く | `clasp open` |
+| `clasp deploy` | 新しいバージョンをデプロイ | `clasp deploy -d "v1.0"` |
+| `clasp version` | バージョン番号作成 | `clasp version "新機能追加"` |
+| `clasp versions` | バージョン一覧表示 | `clasp versions` |
+| `clasp deployments` | デプロイメント一覧 | `clasp deployments` |
+
+### 📝 重要ファイル解説
+
+#### .clasp.json
+```json
+{
+  "scriptId": "196fU31y5azfVbp7F2I4wHW_31zZj343fMe-HjdhEDPgcLu1VCMQJyVqq",
+  "rootDir": "./",
+  "fileExtension": "js"
+}
+```
+- `scriptId`: GASプロジェクトの一意識別子
+- `rootDir`: プッシュ対象ディレクトリ
+- `fileExtension`: ファイル拡張子（js/ts）
+
+#### appsscript.json
+```json
+{
+  "timeZone": "Asia/Tokyo",
+  "dependencies": {
+    "enabledAdvancedServices": []
+  },
+  "exceptionLogging": "STACKDRIVER",
+  "runtimeVersion": "V8",
+  "oauthScopes": [
+    "https://www.googleapis.com/auth/spreadsheets",
+    "https://www.googleapis.com/auth/script.external_request"
+  ]
+}
+```
+- `timeZone`: タイムゾーン設定
+- `dependencies`: 高度なサービス有効化
+- `runtimeVersion`: V8エンジン（最新）
+- `oauthScopes`: 必要な権限スコープ
+
+### 🔗 関連ドキュメント
+
+| ドキュメント | パス | 内容 |
+|------------|------|------|
+| README.md | `localProject/clasp/README.md` | clasp全体ドキュメント |
+| SYSTEM_ARCHITECTURE.md | `localProject/clasp/SYSTEM_ARCHITECTURE.md` | システム設計書 |
+| UNIVERSAL_API_GUIDE.md | `localProject/clasp/UNIVERSAL_API_GUIDE.md` | 汎用API使用ガイド |
+| GITHUB_ACTIONS_SETUP.md | `localProject/clasp/GITHUB_ACTIONS_SETUP.md` | GitHub Actions連携 |
+| HUGGING_FACE_DEPLOYMENT.md | `localProject/clasp/HUGGING_FACE_DEPLOYMENT.md` | Hugging Faceデプロイ |
+
+### 🎓 clasp使用例
+
+#### 新規プロジェクト作成からデプロイまで
+```powershell
+# 1. 新規プロジェクト作成
+clasp create --type standalone --title "My Automation"
+
+# 2. コード編集（VS Codeなどで）
+# code.js, index.html などを作成
+
+# 3. GASにプッシュ
+clasp push
+
+# 4. ブラウザで確認
+clasp open
+
+# 5. デプロイ
+clasp deploy -d "初回リリース"
+```
+
+#### 既存プロジェクトのクローン・編集
+```powershell
+# 1. プロジェクトクローン
+cd C:\xampp\htdocs\localProject\clasp
+clasp clone <scriptId>
+
+# 2. コード編集
+
+# 3. プッシュ
+clasp push
+
+# 4. 最新版取得（他の人が編集した場合）
+clasp pull
+```
+
+### 🔐 認証情報
+clasp認証情報は `~/.clasprc.json` に保存（OAuth2トークン）
+
+**⚠️ セキュリティ:**
+- `.clasprc.json` は絶対にGitにコミットしない
+- scriptIdは公開しても安全（実行権限は別）
+- GitHub Actionsではサービスアカウント使用推奨
+
+### 🚀 今後の活用予定
+- [ ] GitHub Actions → clasp push 自動化
+- [ ] Issue作成時にGAS関数自動実行
+- [ ] Supabase → GAS → Spreadsheet 自動同期
+- [ ] clasp + TypeScript 型安全開発
+
+---
+
+## �🐍 Python スクリプト群
 
 ### Supabase連携
 **パス:** `C:\xampp\htdocs\localProject\AUTOCREATER\`
