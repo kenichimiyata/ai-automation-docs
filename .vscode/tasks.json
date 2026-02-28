@@ -1,0 +1,154 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    // ============================================
+    // Python スクリプト実行
+    // ============================================
+    {
+      "label": "Python: Run Current File",
+      "type": "shell",
+      "command": "${workspaceFolder}/../.venv/Scripts/python.exe",
+      "args": ["${file}"],
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "presentation": {
+        "reveal": "always",
+        "panel": "new"
+      },
+      "problemMatcher": []
+    },
+    
+    // ============================================
+    // Supabase 操作
+    // ============================================
+    {
+      "label": "Supabase: Check Tables",
+      "type": "shell",
+      "command": "${workspaceFolder}/../.venv/Scripts/python.exe",
+      "args": [
+        "${workspaceFolder}/../ai-automation-platform/supabase/check_tables_simple.py"
+      ],
+      "group": "test",
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Supabase: Apply Schema",
+      "type": "shell",
+      "command": "${workspaceFolder}/../.venv/Scripts/python.exe",
+      "args": [
+        "${workspaceFolder}/../apply_supabase_schema.py"
+      ],
+      "group": "none",
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated"
+      },
+      "problemMatcher": []
+    },
+    
+    // ============================================
+    // GitHub 同期
+    // ============================================
+    {
+      "label": "GitHub: Sync Issues",
+      "type": "shell",
+      "command": "${workspaceFolder}/../.venv/Scripts/python.exe",
+      "args": [
+        "${workspaceFolder}/../sync_github_issues.py"
+      ],
+      "group": "none",
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated"
+      },
+      "problemMatcher": []
+    },
+    
+    // ============================================
+    // n8n ワークフロー
+    // ============================================
+    {
+      "label": "n8n: Check Workflow",
+      "type": "shell",
+      "command": "${workspaceFolder}/../.venv/Scripts/python.exe",
+      "args": [
+        "${workspaceFolder}/../n8n_check.py"
+      ],
+      "group": "none",
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated"
+      },
+      "problemMatcher": []
+    },
+    
+    // ============================================
+    // Jekyll サイト
+    // ============================================
+    {
+      "label": "Jekyll: Serve Locally",
+      "type": "shell",
+      "command": "bundle",
+      "args": ["exec", "jekyll", "serve", "--livereload"],
+      "isBackground": true,
+      "group": "none",
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Jekyll: Build",
+      "type": "shell",
+      "command": "bundle",
+      "args": ["exec", "jekyll", "build"],
+      "group": "build",
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated"
+      },
+      "problemMatcher": []
+    },
+    
+    // ============================================
+    // Git 操作
+    // ============================================
+    {
+      "label": "Git: Pull All Repos",
+      "type": "shell",
+      "command": "powershell",
+      "args": [
+        "-Command",
+        "\"Get-ChildItem -Path '${workspaceFolder}/..' -Directory | Where-Object { Test-Path (Join-Path $_.FullName '.git') } | ForEach-Object { Write-Host 'Pulling $_'; git -C $_.FullName pull }\""
+      ],
+      "group": "none",
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Git: Status All Repos",
+      "type": "shell",
+      "command": "powershell",
+      "args": [
+        "-Command",
+        "\"Get-ChildItem -Path '${workspaceFolder}/..' -Directory | Where-Object { Test-Path (Join-Path $_.FullName '.git') } | ForEach-Object { Write-Host '=== $_ ==='; git -C $_.FullName status -s }\""
+      ],
+      "group": "none",
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated"
+      },
+      "problemMatcher": []
+    }
+  ]
+}

@@ -1,0 +1,55 @@
+{
+  "recommendations": [
+    // ============================================
+    // AI & Copilot
+    // ============================================
+    "github.copilot",
+    "github.copilot-chat",
+    
+    // ============================================
+    // Python Development
+    // ============================================
+    "ms-python.python",
+    "ms-python.vscode-pylance",
+    "ms-python.black-formatter",
+    
+    // ============================================
+    // Database
+    // ============================================
+    "mtxr.sqltools",
+    "mtxr.sqltools-driver-pg",
+    "ckolkman.vscode-postgres",
+    
+    // ============================================
+    // Git & GitHub
+    // ============================================
+    "eamodio.gitlens",
+    "github.vscode-pull-request-github",
+    "github.vscode-github-actions",
+    
+    // ============================================
+    // Markdown & Documentation
+    // ============================================
+    "yzhang.markdown-all-in-one",
+    "bierner.markdown-mermaid",
+    "davidanson.vscode-markdownlint",
+    
+    // ============================================
+    // Code Formatting
+    // ============================================
+    "esbenp.prettier-vscode",
+    "editorconfig.editorconfig",
+    
+    // ============================================
+    // YAML & Config Files
+    // ============================================
+    "redhat.vscode-yaml",
+    
+    // ============================================
+    // Utilities
+    // ============================================
+    "streetsidesoftware.code-spell-checker",
+    "gruntfuggly.todo-tree",
+    "aaron-bond.better-comments"
+  ]
+}
