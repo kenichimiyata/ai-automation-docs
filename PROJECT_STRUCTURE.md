@@ -2,6 +2,101 @@
 
 **更新日:** 2026-02-28
 
+## 📂 全体ディレクトリツリー
+
+```
+C:\xampp\htdocs\
+├── 🎯 ai-automation-dashboard/          # GitHub Actions自動化ハブ
+│   ├── .github/
+│   │   └── workflows/
+│   │       ├── sync-issues.yml          # Issue → Supabase + Google Chat ✅
+│   │       └── bpmn-flow-demo.yml       # BPMN風フローテスト ✅
+│   └── README.md
+│
+├── 📚 ai-automation-docs/               # ドキュメント + GitHub Pages
+│   ├── bpmn/
+│   │   ├── memory_workflow.json        # 記憶フロー（9ノード）
+│   │   └── task_summary_workflow.json  # タスクまとめBPMN
+│   ├── gas/
+│   │   ├── Code.gs                     # GAS BPMN Designer
+│   │   ├── BpmnDesigner.html           # シンプル版UI
+│   │   └── .clasp.json
+│   ├── PROJECT_STRUCTURE.md            # このファイル ✅
+│   └── README.md
+│
+├── 🏢 ai-automation-platform/           # bpmbox組織ハブ
+│   ├── docs/
+│   │   ├── index.md                    # Jekyll landing page
+│   │   └── wiki/
+│   │       └── System-Architecture.md  # 技術解説
+│   ├── supabase/
+│   │   └── schema.sql                  # テーブル設計（予定）
+│   ├── IMPLEMENTATION_PLAN.md          # 23個のIssue計画
+│   └── README.md
+│
+├── 🔧 localProject/
+│   ├── AUTOCREATE/
+│   │   ├── SupabaseCopilotBridge.py    # VS Code Copilot自動連携
+│   │   └── supabase_to_vscode_chat.py
+│   └── AUTOCREATE.wiki/                # 重要ナレッジベース ⭐
+│       ├── Home.md
+│       ├── Continuity-Guide.md         # AI継続開発ガイド
+│       ├── System-Architecture.md
+│       ├── ai-memory/                  # JSON形式AIメモリ
+│       ├── knowledge-base/
+│       └── conversation-logs/
+│
+├── 📊 n8n_workflows/                    # n8n可視化・管理
+│   ├── n8n_mermaid_dash.html
+│   ├── n8n_local_visualizer.html
+│   ├── gen_mermaid_local.py
+│   ├── n8n_download.py
+│   └── n8n_check.py
+│
+├── 🐍 Python スクリプト群/
+│   ├── supabase_crud.html              # SupabaseブラウザCRUD
+│   ├── create_n8n_issue.py             # n8n→Issue作成
+│   ├── fix_issue27.py
+│   ├── inspect_mermaid_wf.py
+│   └── extract_mermaid_html.py
+│
+├── 🔨 PhPRunner_11/                     # Laravel/PHP プロジェクト
+│   ├── .github/
+│   │   └── workflows/
+│   │       ├── notify-issue-to-googlechat.yml
+│   │       ├── auto-assign-copilot.yml  # Copilot自動アサイン
+│   │       ├── cloud-agent.yml          # /executeコマンド
+│   │       └── deploy-n8n-workflows.yml
+│   └── ...
+│
+├── 🎨 evaProject/                       # Laravel プロジェクト
+│   ├── artisan
+│   ├── composer.json
+│   ├── googleChat.php                  # Google Chat連携
+│   └── app/
+│
+├── 📦 strapi-cms-hf/                    # Headless CMS
+│
+├── 🌐 DHTMLX Navigator/
+│   ├── dhtmlx_navigator.html
+│   └── navigator.html
+│
+├── 🔄 整理対象（削除候補）/
+│   ├── shop11/                         # 本体
+│   ├── shop11 copy/
+│   ├── shop11_backup/
+│   ├── shop11_build/
+│   ├── shop11.worktrees/
+│   ├── shop11bk/
+│   ├── phprunner-laravel-blade/
+│   ├── phprunner-react-frontend/
+│   └── phprunner11/
+│
+└── .venv/                              # Python仮想環境
+```
+
+---
+
 ## 🎯 核心プロジェクト
 
 ### ai-automation-dashboard
