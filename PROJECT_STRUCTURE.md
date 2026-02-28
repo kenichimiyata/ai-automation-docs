@@ -320,7 +320,208 @@ https://script.google.com/macros/s/AKfycbzOFStOJRdYblPXloslKV0rDmzP24aO9uQuudQn_
 
 ---
 
-## 📊 全体フロー図
+## � 全体アーキテクチャ図（Mermaid）
+
+```mermaid
+graph TB
+    subgraph "👤 Human Interface"
+        A[GitHub Issue Manual]
+        B[VS Code Copilot Chat]
+        C[Google Chat]
+        D[GAS BPMN Designer]
+    end
+    
+    subgraph "⚙️ GitHub Actions Pipeline"
+        E[sync-issues.yml]
+        F[種別判定]
+        G[Milestone処理]
+        H[Bug処理]
+        I[通常処理]
+    end
+    
+    subgraph "💾 Supabase Database"
+        J[(github_issues table)]
+        K[(ai_responses table)]
+        L[(ai_agent_state table)]
+    end
+    
+    subgraph "🤖 AI Automation"
+        M[Realtime Listener]
+        N[SupabaseCopilotBridge.py]
+        O[pyautogui Automation]
+    end
+    
+    subgraph "📊 Visualization Tools"
+        P[n8n Dashboard]
+        Q[Mermaid Generator]
+        R[DHTMLX Navigator]
+    end
+    
+    subgraph "🔔 External Services"
+        S[Google Chat Webhook]
+        T[Hugging Face n8n]
+        U[noVNC Cloud Desktop]
+    end
+    
+    A -->|opens| E
+    E --> F
+    F --> G
+    F --> H
+    F --> I
+    G --> J
+    H --> J
+    I --> J
+    E --> S
+    
+    J -->|Realtime| M
+    M --> N
+    N --> O
+    O --> B
+    B -->|response| K
+    
+    J --> P
+    J --> Q
+    
+    D -->|manage| E
+    P --> T
+    U --> O
+    
+    S --> C
+    
+    style A fill:#e1f5ff
+    style B fill:#fff4e1
+    style C fill:#e1ffe1
+    style J fill:#ffe1e1
+    style M fill:#f5e1ff
+    style E fill:#fff9e1
+```
+
+### システム連携フロー
+
+```mermaid
+sequenceDiagram
+    participant Human
+    participant GitHub
+    participant Actions as GitHub Actions
+    participant Supabase
+    participant Listener as Realtime Listener
+    participant Bridge as Copilot Bridge
+    participant VSCode as VS Code Copilot
+    participant GoogleChat
+    
+    Human->>GitHub: Issue作成
+    GitHub->>Actions: Trigger sync-issues.yml
+    
+    Actions->>Actions: 種別判定（Milestone/Bug/通常）
+    Actions->>Supabase: INSERT into github_issues
+    Actions->>GoogleChat: 通知送信
+    GoogleChat->>Human: 通知表示
+    
+    Supabase->>Listener: Realtime Event
+    Listener->>Bridge: Issue情報取得
+    Bridge->>VSCode: pyautogui自動入力
+    VSCode->>VSCode: AI応答生成
+    VSCode->>Bridge: 応答取得
+    Bridge->>Supabase: INSERT into ai_responses
+    
+    Note over Human,Supabase: 🔄 循環フロー完成
+```
+
+---
+
+## 🌐 サービス一覧・URL・認証情報
+
+### GitHub Repositories
+
+| リポジトリ | Owner | URL | アクセス | 用途 |
+|-----------|-------|-----|---------|------|
+| ai-automation-dashboard | kenichimiyata | https://github.com/kenichimiyata/ai-automation-dashboard | Public | GitHub Actions実行ハブ |
+| ai-automation-docs | kenichimiyata | https://github.com/kenichimiyata/ai-automation-docs | Public | ドキュメント + Pages |
+| ai-automation-platform | bpmbox | https://github.com/bpmbox/ai-automation-platform | Public | 組織ハブ + wiki |
+
+### GitHub Pages
+
+| サイト | URL | ステータス |
+|--------|-----|-----------|
+| kenichimiyata docs | https://kenichimiyata.github.io/ai-automation-docs/ | ✅ 公開中 |
+| bpmbox platform | https://bpmbox.github.io/ai-automation-platform/ | 🔧 設定中 |
+
+### GitHub Projects
+
+| プロジェクト | URL | オーナー |
+|------------|-----|---------|
+| Project #6 (Public) | https://github.com/users/kenichimiyata/projects/6 | kenichimiyata |
+| Project #8 | https://github.com/orgs/bpmbox/projects/8 | bpmbox |
+
+### Supabase
+
+| 項目 | 値 | 備考 |
+|------|-----|------|
+| エンドポイント | `https://rootomzbucovwdqsscqd.supabase.co` | REST API |
+| Anon Key | `eyJhbGc...` | GitHub Secretに保存 |
+| Realtime | ✅ 有効 | Webhook対応 |
+| RLS (Row Level Security) | 🔧 設定予定 | Milestone 1 |
+
+**テーブル一覧:**
+- `github_issues` - Issue同期データ
+- `ai_responses` - Copilot応答ログ
+- `ai_agent_state` - エージェント状態管理
+
+### Google Apps Script
+
+| サービス | URL | 認証 |
+|----------|-----|------|
+| BPMN Designer (本番) | https://script.google.com/macros/s/AKfycbzOFStOJRdYblPXloslKV0rDmzP24aO9uQuudQn_koE_ENnqdFfLX98svbyJOJ2Vx1_/exec | ANYONE_ANONYMOUS |
+| BPMN Designer (dev) | https://script.google.com/a/macros/urlounge.co.jp/s/AKfycbw3WJEVFoIkc8JHnXtWrm9Cs2Om_6ODqp0s_NTvvDIg/dev | 要認証 |
+| Script Editor | https://script.google.com/u/1/home/projects/10zRCJZXrcPhhDQ2NhJBtVTGSuDvmH-MWyA9VAuJmOHyVpDDCPRa3vAF4/edit | 要認証 |
+
+### Google Chat
+
+| 項目 | 値 |
+|------|-----|
+| Webhook URL | `https://chat.googleapis.com/v1/spaces/AAAAi6uA0xw/messages?key=...` |
+| 保存場所 | GitHub Secret: `GOOGLE_CHAT_WEBHOOK` |
+| 通知タイミング | Issue作成・編集・クローズ |
+
+### Hugging Face Spaces
+
+| サービス | URL | 認証 | 用途 |
+|----------|-----|------|------|
+| n8n Free Instance | https://kenken999-n8n-free.hf.space/ | 要ログイン | ワークフロー自動化 |
+| My workflow 6 | https://kenken999-n8n-free.hf.space/workflow/OSJHT5V0y7LN9NNJ | 要ログイン | 主要ワークフロー |
+
+### Cloud Desktop (noVNC/Selkies)
+
+| 項目 | 値 |
+|------|-----|
+| URL | https://webtop-desktop-27951941726.asia-northeast1.run.app/ |
+| ユーザー名 | `abc` |
+| パスワード | `changeme123` |
+| 用途 | リモートブラウザ操作、Playwright実行環境 |
+
+### Google AI Studio
+
+| サービス | URL | 用途 |
+|----------|-----|------|
+| リファスタ AI査定員 | https://aistudio.google.com/apps/1e5fe3dc-642c-42f8-8cb0-6381d847c5df | AI実験プラットフォーム |
+
+### Google Spreadsheet
+
+| ドキュメント | URL | 用途 |
+|------------|-----|------|
+| t-lounge | https://docs.google.com/spreadsheets/d/1cJkeKCEeuOfM0WAc9Vly8Gj-Ai6uU4674uLuE2MlYp4/edit | データ管理 |
+
+### ローカルサービス
+
+| サービス | URL | ポート |
+|----------|-----|--------|
+| Apache (XAMPP) | http://localhost/ | 80 |
+| MySQL (XAMPP) | localhost | 3306 |
+| Gradio (SupabaseCopilotBridge) | http://127.0.0.1:7872 | 7872 |
+
+---
+
+## �📊 全体フロー図
 
 ```
 ┌─────────────────┐
