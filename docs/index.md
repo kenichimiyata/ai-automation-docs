@@ -50,6 +50,7 @@ graph TB
 
 | ページ | 内容 |
 |--------|------|
+| **[よくある質問 (FAQ)](wiki/faq)** | **❓ 質問の仕方・よくある質問と回答** ⭐ NEW |
 | **[10年の歴史](history)** | **📜 2013-2026年 - bpmchat.com から AI 自動化へ** ⭐ NEW |
 | **[Copilot 協働実践例](copilot-workflow-example)** | **🎯 実際のやり取り・スクリーンショット自動化・Mermaid図** ⭐ NEW |
 | [Repository Guide](repository-guide) | 📁 リポジトリ構成・使い分け完全ガイド |
