@@ -93,6 +93,57 @@ noVNC Gateway（AI 専用デスクトップ）
 
 ---
 
+## 🔧 clasp（Google Apps Script Bridge）
+
+**clasp** は、VS Code で Google Apps Script（GAS）を開発・デプロイするための CLI ツールです。このプロジェクトでは `kenichimiyata/clasp` が Git Submodule として組み込まれ、**VS Code Copilot Bridge** の役割を担います。
+
+### 📦 リポジトリ・配置
+
+| 項目 | 内容 |
+|------|------|
+| リポジトリ | [kenichimiyata/clasp](https://github.com/kenichimiyata/clasp) |
+| サブモジュールパス | `localProject/clasp/` |
+| 主要ディレクトリ | `localProject/clasp/vscode/copilot-input-helper/` |
+
+### 🗂️ 主要ファイル
+
+| ファイル | 役割 |
+|---------|------|
+| `supabaseHelper.ts` | Supabase Realtime client — Issues の変更をリアルタイム受信 |
+| `extension.ts` | VS Code 拡張機能ホスト — Copilot Chat へ自動入力 |
+| `config.ts` | マルチ AI 協調設定 |
+
+### 🔄 動作フロー
+
+```
+GitHub Issue 作成
+     ↓
+GitHub Actions → Supabase INSERT (github_issues テーブル)
+     ↓
+copilot-input-helper (clasp/vscode) — Realtime でイベントをキャッチ
+     ↓
+pyautogui → VS Code Copilot Chat に自動入力
+     ↓
+Copilot が Issue を分析・実装 → PR 作成
+```
+
+### 🗺️ アーキテクチャ上の位置づけ
+
+clasp（GAS）は**自動化ハブ**の一部として、2つの役割を担います：
+
+- **入力側**: Google スプレッドシート / Workspace から GitHub Issue を作成
+- **Bridge 側**: Supabase Realtime → VS Code Copilot Chat への自動入力（`copilot-input-helper`）
+
+### ✅ 実装チェックリスト
+
+- [ ] copilot-input-helper plugin を ai-automation-platform repo に統合
+- [ ] `.vscode/settings.json` に `supabaseUrl`, `supabaseAnonKey` を設定
+- [ ] Realtime subscription を `github_issues` テーブルに追加
+- [ ] Issue フォーマッター（`src/formatters.ts`）を実装
+- [ ] GAS 公開サンプルをデプロイ（🔴 即時優先）
+
+---
+
 ## 🔗 主要リンク
 
 | リソース | URL |
