@@ -202,7 +202,132 @@ https://script.google.com/macros/s/AKfycbzOFStOJRdYblPXloslKV0rDmzP24aO9uQuudQn_
 ---
 
 ## � clasp - Google Apps Script開発環境（超重要）
+### 🔗 clasp全体アーキテクチャ図
 
+```mermaid
+graph TB
+    subgraph "ローカル開発環境"
+        VSCode[VS Code]
+        LocalFiles[ローカルファイル<br/>*.gs, *.html, *.json]
+        ClaspCLI[clasp CLI]
+        Git[Git/GitHub]
+    end
+
+    subgraph "Google Cloud Platform"
+        GAS[Google Apps Script]
+        Drive[Google Drive]
+        Sheets[Google Spreadsheet]
+        Chat[Google Chat]
+    end
+
+    subgraph "外部サービス統合"
+        GitHub[GitHub API]
+        Firebase[Firebase]
+        LINE[LINE Messaging API]
+        Gradio[Gradio]
+        Hasura[Hasura GraphQL]
+    end
+
+    VSCode -->|編集| LocalFiles
+    LocalFiles -->|clasp push| ClaspCLI
+    ClaspCLI -->|デプロイ| GAS
+    LocalFiles -->|commit/push| Git
+    
+    GAS -->|読み書き| Drive
+    GAS -->|操作| Sheets
+    GAS -->|通知| Chat
+    
+    GAS <-->|REST API| GitHub
+    GAS <-->|Realtime DB| Firebase
+    GAS <-->|Webhook| LINE
+    GAS <-->|埋め込み| Gradio
+    GAS <-->|GraphQL| Hasura
+
+    ClaspCLI -.->|clasp pull| LocalFiles
+    GAS -.->|Web公開| Internet[インターネット]
+
+    style ClaspCLI fill:#4285f4,stroke:#333,stroke-width:3px,color:#fff
+    style GAS fill:#4285f4,stroke:#333,stroke-width:2px,color:#fff
+    style Git fill:#f05032,stroke:#333,stroke-width:2px,color:#fff
+```
+
+### 🔄 clasp開発フロー（シーケンス図）
+
+```mermaid
+sequenceDiagram
+    actor Dev as 開発者
+    participant VS as VS Code
+    participant Clasp as clasp CLI
+    participant Git as GitHub
+    participant GAS as Google Apps Script
+    participant API as 外部API
+
+    Note over Dev,API: 1️⃣ 初期設定フェーズ
+    Dev->>Clasp: clasp login
+    Clasp->>GAS: OAuth認証
+    GAS-->>Clasp: 認証トークン
+    Dev->>Clasp: clasp create/clone
+    Clasp->>GAS: プロジェクト作成/取得
+    GAS-->>Clasp: scriptId
+    Clasp->>VS: .clasp.json生成
+
+    Note over Dev,API: 2️⃣ 開発フェーズ
+    Dev->>VS: コード編集（*.gs, *.html）
+    Dev->>Clasp: clasp push
+    Clasp->>GAS: ファイルアップロード
+    GAS-->>Clasp: デプロイ成功
+    Dev->>VS: テスト実行
+    VS->>GAS: 関数実行
+    GAS->>API: 外部API呼び出し
+    API-->>GAS: レスポンス
+    GAS-->>VS: 実行結果
+
+    Note over Dev,API: 3️⃣ バージョン管理フェーズ
+    Dev->>Git: git add/commit
+    Dev->>Git: git push
+    Git-->>Dev: バックアップ完了
+    Dev->>Clasp: clasp version "v1.0"
+    Clasp->>GAS: バージョン作成
+    Dev->>Clasp: clasp deploy
+    Clasp->>GAS: 本番デプロイ
+    GAS-->>Clasp: デプロイID
+
+    Note over Dev,API: 4️⃣ 運用フェーズ
+    GAS->>API: 定期実行（トリガー）
+    API-->>GAS: データ受信
+    GAS->>GAS: 処理実行
+    GAS->>API: 結果送信（Webhook等）
+```
+
+### 🌐 clasp統合サービス一覧
+
+| カテゴリ | サービス/ツール | 用途 | 統合方法 |
+|---------|---------------|------|---------|
+| **開発環境** | VS Code | コード編集・デバッグ | clasp CLI |
+|  | TypeScript | 型安全開発 | @types/google-apps-script |
+|  | Git/GitHub | バージョン管理 | clasp push → git commit |
+|  | ESLint/Prettier | コード品質管理 | .eslintrc, .prettierrc |
+| **Google サービス** | Google Apps Script | 実行環境 | clasp push/pull/deploy |
+|  | Google Spreadsheet | データ管理 | SpreadsheetApp API |
+|  | Google Drive | ファイル保存 | DriveApp API |
+|  | Google Chat | 通知・Bot | Webhook + Card V2 |
+|  | Gmail | メール送信 | GmailApp API |
+|  | Calendar | スケジュール | CalendarApp API |
+| **外部API統合** | GitHub API | Issue/PR管理 | UrlFetchApp + REST API |
+|  | Firebase | Realtime Database | REST API |
+|  | Supabase | PostgreSQL DB | REST API + API Key |
+|  | LINE Messaging | LINE Bot | Webhook + Reply API |
+|  | Gradio | AI UI統合 | iframe埋め込み |
+|  | Hasura | GraphQL | UrlFetchApp + GraphQL |
+|  | n8n | ワークフロー | Webhook連携 |
+| **認証・セキュリティ** | OAuth 2.0 | Google認証 | ScriptApp.getOAuthToken() |
+|  | Service Account | サーバー認証 | JWT + Private Key |
+|  | API Key | 外部API認証 | PropertiesService |
+|  | Secret Manager | 機密情報管理 | Google Cloud Secret Manager |
+| **デプロイ・自動化** | GitHub Actions | CI/CD | clasp push自動化 |
+|  | Cloud Scheduler | 定期実行 | GASトリガー呼び出し |
+|  | Webhook | イベント駆動 | doPost(e), doGet(e) |
+|  | Cloud Functions | サーバーレス | REST API連携 |
 ### clasp とは？
 **Command Line Apps Script Projects** - Google Apps Scriptをローカルで開発・管理するための公式CLIツール
 
