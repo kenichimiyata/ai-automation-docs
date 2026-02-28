@@ -178,6 +178,9 @@ graph LR
 
 ## Documentation
 
+### 📋 Overview
+- [**Summary**](docs/summary.md) - 全コンテンツの要約（アーキテクチャ・マイルストーン・リンク集）
+
 ### 🚀 Getting Started
 - [**Implementation Plan**](docs/implementation-plan.md) - Milestone 1/2/3 完全ガイド
 - [**Repository Guide**](docs/wiki/repository-guide.md) - 3層リポジトリ構造の使い分け
