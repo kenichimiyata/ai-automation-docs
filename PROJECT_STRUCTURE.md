@@ -34,17 +34,59 @@ C:\xampp\htdocs\
 │   ├── IMPLEMENTATION_PLAN.md          # 23個のIssue計画
 │   └── README.md
 │
-├── 🔧 localProject/
-│   ├── AUTOCREATE/
-│   │   ├── SupabaseCopilotBridge.py    # VS Code Copilot自動連携
+├── 🔧 localProject/                     # 🎯 メイン開発環境（Difyベース）
+│   ├── 🌟 AUTOCREATER/                 # 🏆 オリジナル Hugging Face Space（最初のプロジェクト）
+│   │   ├── SupabaseCopilotBridge.py   # Supabase → VS Code Copilot自動入力
+│   │   ├── supabase_to_vscode_chat.py # Realtime Listener + pyautogui
+│   │   ├── gradio_app.py              # Gradio UI
+│   │   ├── requirements.txt
+│   │   └── README.md                  # オリジナルプロジェクト説明
+│   ├── AUTOCREATE/                     # 本プロジェクト（AUTOCREATER後継）
+│   │   ├── SupabaseCopilotBridge.py   # VS Code Copilot自動連携
 │   │   └── supabase_to_vscode_chat.py
-│   ├── AUTOCREATE.wiki/                # 重要ナレッジベース ⭐
+│   ├── AUTOCREATE.wiki/                # 重要ナレッジベース ⭐（AI記憶回復用）
 │   │   ├── Home.md
 │   │   ├── Continuity-Guide.md         # AI継続開発ガイド
-│   │   ├── System-Architecture.md
+│   │   ├── System-Architecture.md      # FastAPI Django Main Live
 │   │   ├── ai-memory/                  # JSON形式AIメモリ
 │   │   ├── knowledge-base/
 │   │   └── conversation-logs/
+│   ├── 🤖 dify/                        # 🎯 localProject基盤（Dify AI Workflow Platform）
+│   │   ├── docker-compose.yml
+│   │   ├── .env
+│   │   ├── api/
+│   │   └── web/
+│   ├── 📱 TODOList-Laravel/            # 🎯 公開用プロジェクト（PHPRunner + Laravel統合）
+│   │   ├── .github/
+│   │   │   └── workflows/
+│   │   │       ├── deploy-hf.yml       # Hugging Face自動デプロイ
+│   │   │       └── clasp-sync.yml      # clasp同期
+│   │   ├── public/
+│   │   │   ├── 🔥 n8n/                 # DHTMLX Workflow Builder（超重要UI）
+│   │   │   │   ├── index-dhtmlx.html   # DHHTMLXベース可視化
+│   │   │   │   ├── builder.html        # ワークフロービルダー
+│   │   │   │   ├── dashboard-v3.html   # 最新ダッシュボード
+│   │   │   │   ├── api-functions.js    # Supabase API統合
+│   │   │   │   ├── supabase-config.js  # Supabase設定
+│   │   │   │   └── test-dhtmlx-local.html
+│   │   │   ├── phprunner/              # PHPRunnerコア
+│   │   │   ├── classes/
+│   │   │   └── connections/
+│   │   ├── app/                        # Laravelアプリケーション
+│   │   ├── routes/
+│   │   ├── resources/
+│   │   ├── gradio_phprunner_api_generator.py  # GradioベースAPI生成
+│   │   ├── composer.json
+│   │   └── README.md
+│   ├── .github/                        # 🎯 clasp自動デプロイ（localProject全体）
+│   │   └── workflows/
+│   │       ├── clasp-deploy.yml        # clasp push自動化
+│   │       └── gas-sync.yml            # GAS同期
+│   ├── fastapi_django_main_live/       # FastAPI + Django統合
+│   ├── n8n-free/                       # n8n無料版設定
+│   ├── supabase/                       # Supabaseローカル設定
+│   │   ├── config.toml
+│   │   └── seed.sql
 │   └── clasp/                          # 🔑 GAS開発ツール集（超重要）
 │       ├── workflow/                   # clasp管理GASプロジェクト
 │       │   ├── .clasp.json             # GASプロジェクト設定
@@ -110,6 +152,214 @@ C:\xampp\htdocs\
 │   └── phprunner11/
 │
 └── .venv/                              # Python仮想環境
+```
+
+---
+
+## 🔧 localProject - メイン開発環境
+
+**パス:** `C:\xampp\htdocs\localProject\`  
+**基盤:** Dify AI Workflow Platform  
+**目的:** 統合開発環境・自動化プラットフォーム
+
+### 🏆 プロジェクト構成（重要度順）
+
+#### 1. 🌟 AUTOCREATER/ - オリジナルプロジェクト
+**パス:** `localProject/AUTOCREATER/`  
+**目的:** 最初のPython Hugging Face Space（全ての起点）  
+**Hugging Face:** kenken999/AUTOCREATER
+
+**主要ファイル:**
+- `SupabaseCopilotBridge.py` - Supabase Realtime → VS Code Copilot自動入力
+- `supabase_to_vscode_chat.py` - pyautogui + Realtime Listener実装
+- `gradio_app.py` - Gradio UI（初期バージョン）
+- `requirements.txt` - Python依存関係
+
+**歴史的重要性:**
+- Supabase → VS Code Copilot連携の概念実証
+- pyautogui自動化の原型
+- GitHub Issue → AI応答 自動化の起点
+
+---
+
+#### 2. 🤖 dify/ - localProject基盤
+**パス:** `localProject/dify/`  
+**目的:** Dify AI Workflow Platform（localProject全体の基盤）  
+**公式:** https://dify.ai/
+
+**構成:**
+```
+dify/
+├── docker-compose.yml       # Dify全体のDocker構成
+├── .env                     # Dify環境変数
+├── api/                     # Dify Backend (FastAPI)
+├── web/                     # 🔥 Dify Frontend (Next.js) ← これが「cloudrun-web」候補
+│   ├── next.config.js
+│   ├── package.json
+│   └── app/
+└── worker/                  # Difyワーカー
+```
+
+**web/ (Dify Frontend) 詳細:**
+- **技術スタック:** Next.js 14 + TypeScript + Tailwind CSS
+- **パス:** `localProject/web/`
+- **起動:** `pnpm install` → `pnpm dev`
+- **URL:** http://localhost:3000
+- **Docker:** `Dockerfile` でCloud Runデプロイ可能
+- **重要性:** Dify UIの本体、カスタマイズ可能
+
+**用途:**
+- AI Workflowビジュアル構築
+- LLMチェーン管理
+- RAG（Retrieval-Augmented Generation）
+- エージェント構築
+
+---
+
+#### 3. 📱 TODOList-Laravel/ - 公開用プロジェクト
+**パス:** `localProject/TODOList-Laravel/`  
+**目的:** PHPRunner + Laravel統合プロジェクト（公開用）  
+**Hugging Face:** kenken999/TODOList-Laravel
+
+**主要構成:**
+```
+TODOList-Laravel/
+├── .github/
+│   └── workflows/
+│       ├── deploy-hf.yml              # Hugging Face自動デプロイ
+│       └── clasp-sync.yml             # clasp同期
+├── public/
+│   ├── 🔥 n8n/                        # ← 超重要！DHTMLX Workflow Builder
+│   │   ├── index-dhtmlx.html          # DHHTMLXベースUI
+│   │   ├── builder.html               # ワークフロービルダー
+│   │   ├── dashboard-v3.html          # 最新ダッシュボード（推奨）
+│   │   ├── api-functions.js           # Supabase CRUD API
+│   │   ├── supabase-config.js         # Supabase接続設定
+│   │   └── test-dhtmlx-local.html     # ローカルテスト
+│   ├── phprunner/                     # PHPRunnerコア
+│   ├── classes/
+│   └── connections/
+├── app/                               # Laravelアプリ
+├── routes/
+├── resources/
+├── gradio_phprunner_api_generator.py  # GradioベースAPI生成ツール
+├── composer.json
+└── README.md
+```
+
+**public/n8n/ - DHTMLX Workflow Builder:**
+- **目的:** n8nワークフローのDHTMLX可視化・編集
+- **技術:** DHTMLX Diagram + Supabase REST API
+- **機能:**
+  - ワークフロー一覧表示
+  - ノード追加・編集・削除
+  - ビジュアルエディタ
+  - Supabase `workflow_entity` テーブル連携
+- **推奨URL:** `public/n8n/dashboard-v3.html`
+
+**Gradio API生成ツール:**
+- `gradio_phprunner_api_generator.py` - PHPRunner → REST API自動生成
+- Hugging Face Spaceで公開
+
+---
+
+#### 4. 🔑 clasp/ - GAS開発ツール集
+**パス:** `localProject/clasp/`  
+**目的:** Google Apps Script統合開発環境
+
+（詳細は「clasp詳細セクション」参照）
+
+---
+
+#### 5. .github/ - clasp自動デプロイ
+**パス:** `localProject/.github/workflows/`  
+**目的:** localProject全体のGitHub Actions設定
+
+**主要ワークフロー:**
+- `clasp-deploy.yml` - clasp push自動化（clasp/配下のGASプロジェクト）
+- `gas-sync.yml` - GAS同期確認
+
+**トリガー:**
+- `push` to `main` branch `clasp/**`
+- Manual dispatch
+
+---
+
+#### 6. その他重要ディレクトリ
+
+| ディレクトリ | 用途 | 重要度 |
+|------------|------|-------|
+| `fastapi_django_main_live/` | FastAPI + Django統合アーキテクチャ | 🔴 高 |
+| `AUTOCREATE.wiki/` | AI継続開発ナレッジベース | 🔴 最高 |
+| `n8n-free/` | n8n無料版設定 | 🟡 中 |
+| `supabase/` | Supabaseローカル設定（seed.sql, config.toml） | 🟡 中 |
+| `workflow/` | ワークフロー管理 | 🟡 中 |
+| `api-workflow-builder/` | API統合ワークフロービルダー | 🟢 低 |
+| `webtop-dev/` | Cloud Run Webtop開発環境 | 🟢 低 |
+
+---
+
+### 🔗 localProject連携フロー
+
+```mermaid
+graph LR
+    subgraph "localProject"
+        AUTOCREATER[AUTOCREATER<br/>オリジン]
+        DIFY[dify/<br/>AI Platform]
+        TODO[TODOList-Laravel<br/>公開UI]
+        CLASP[clasp/<br/>GAS開発]
+        GITHUB[.github/<br/>CI/CD]
+    end
+
+    subgraph "外部サービス"
+        HF[Hugging Face Space]
+        SUPA[Supabase]
+        GAS[Google Apps Script]
+        CLOUDRUN[Cloud Run]
+    end
+
+    AUTOCREATER -->|概念実証| TODO
+    DIFY -->|基盤提供| TODO
+    TODO -->|デプロイ| HF
+    TODO -->|データ| SUPA
+    CLASP -->|自動化| GAS
+    GITHUB -->|clasp push| CLASP
+    GITHUB -->|deploy| HF
+    TODO -->|Dockerfile| CLOUDRUN
+    DIFY -->|web/| CLOUDRUN
+
+    style AUTOCREATER fill:#ff6b6b,stroke:#333,stroke-width:3px,color:#fff
+    style DIFY fill:#4285f4,stroke:#333,stroke-width:3px,color:#fff
+    style TODO fill:#51cf66,stroke:#333,stroke-width:3px,color:#fff
+```
+
+---
+
+### 💡 cloudrun-web について
+
+**お探しの「cloudrun-web」は以下の可能性があります:**
+
+1. **localProject/web/** (最有力)
+   - Dify Frontend (Next.js)
+   - Dockerfileあり (`localProject/web/Dockerfile`)
+   - Cloud Runデプロイ可能
+
+2. **localProject/clasp/cloudrun-n8n/**
+   - n8nのCloud Runデプロイ設定
+   - `deploy-cloudrun.sh` スクリプト
+
+3. **localProject/webtop-dev/**
+   - Cloud Run Webtop環境
+   - VSCode, Navicat, PHPRunner含む
+
+**確認方法:**
+```powershell
+# web/のDockerfile確認
+cat C:\xampp\htdocs\localProject\web\Dockerfile
+
+# cloudrun関連検索
+cd C:\xampp\htdocs\localProject
+Select-String -Path . -Pattern "cloudrun" -Recurse
 ```
 
 ---
