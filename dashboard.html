@@ -228,6 +228,7 @@
         <div class="nav">
             <div class="nav-item active" onclick="showSection('services')">📡 Services</div>
             <div class="nav-item" onclick="showSection('tools')">🛠️ Tools</div>
+            <div class="nav-item" onclick="showSection('models')">🤖 HuggingFace Models</div>
             <div class="nav-item" onclick="showSection('docs')">📚 Documentation</div>
             <div class="nav-item" onclick="showSection('projects')">💼 Projects</div>
             <div class="nav-item" onclick="showSection('files')">📁 Files</div>
@@ -239,7 +240,7 @@
                 <h2>📡 Services</h2>
                 <div class="stats">
                     <div class="stat">
-                        <span class="stat-value">4</span>
+                        <span class="stat-value">5</span>
                         <span class="stat-label">Active Services</span>
                     </div>
                     <div class="stat">
@@ -247,7 +248,7 @@
                         <span class="stat-label">Automation Rate</span>
                     </div>
                     <div class="stat">
-                        <span class="stat-value">17</span>
+                        <span class="stat-value">19</span>
                         <span class="stat-label">Automated Steps</span>
                     </div>
                 </div>
@@ -287,7 +288,8 @@ graph TB
         I1{✅ テスト<br/>成功?}
     end
     
-    subgraph ACT["🔁 ACT Phase - 各サービス割り当て"]
+    subgraph ACT["🔁 ACT Phase - GAS中心で世界展開"]
+        I5[🔥 GAS Deploy<br/>世界展開中核]
         I2[☁️ HuggingFace<br/>Deploy実行]
         I3[📄 GitHub Pages<br/>Deploy実行]
         I4[🔧 各種API<br/>サービス割り当て]
@@ -310,12 +312,14 @@ graph TB
     I --> J
     J --> K
     K --> I1
-    I1 -->|成功| I2
-    I1 -->|成功| I3
-    I1 -->|成功| I4
-    I2 --> L
-    I3 --> L
-    I4 --> L
+    I1 -->|成功| I5
+    I5 --> I2
+    I5 --> I3
+    I5 --> I4
+    I5 --> L
+    I2 --> M
+    I3 --> M
+    I4 --> M
     L --> M
     M --> N
     N -.-> A0
@@ -335,6 +339,7 @@ graph TB
     style J fill:#fff4e1
     style K fill:#ffe1e1
     style I1 fill:#fff9e1
+    style I5 fill:#ffcccc
     style I2 fill:#e1ffe1
     style I3 fill:#e1ffe1
     style I4 fill:#e1ffe1
@@ -397,6 +402,21 @@ graph TB
                             <li><a href="docs/vscode-copilot-guide.md">Usage Guide</a></li>
                         </ul>
                     </div>
+                    
+                    <div class="card">
+                        <h3>🔥 Google Apps Script (GAS)<span class="badge active">Active</span></h3>
+                        <p style="color: #666; margin-bottom: 15px; font-size: 0.95em;">
+                            <strong>役割:</strong> <strong>ACT Phase 中核 - 世界展開対応</strong>。サーバーレスで複数地域から同時実行可能。BPMN Designer、データ処理、自動化スクリプトをGoogle Cloudで実行。
+                        </p>
+                        <ul>
+                            <li><a href="https://script.google.com/a/macros/urlounge.co.jp/s/AKfycbzOFStOJRdYblPXloslKV0rDmzP24aO9uQuudQn_koE_ENnqdFfLX98svbyJOJ2Vx1_/exec" target="_blank">🔗 BPMN Designer (GAS Deployed)</a></li>
+                            <li><strong>Infrastructure:</strong> Google Cloud (Serverless)</li>
+                            <li><strong>Scalability:</strong> ✅ Global (複数地域対応)</li>
+                            <li><strong>Cost:</strong> ✅ 低コスト運用</li>
+                            <li><strong>Features:</strong> HTML UI, LocalStorage, JSON Export/Import</li>
+                            <li><strong>Version:</strong> v1.0 (2026-02-28)</li>
+                        </ul>
+                    </div>
                 </div>
             </div>
             
@@ -456,6 +476,105 @@ graph TB
                             <li><strong>Format:</strong> Flowchart, Sequence, Gantt</li>
                         </ul>
                     </div>
+                </div>
+            </div>
+            
+            <!-- HuggingFace Models Section -->
+            <div id="models" class="section">
+                <h2>🤖 HuggingFace Models - PDCA成果物の公開</h2>
+                
+                <h3 style="margin-top: 30px; margin-bottom: 15px; color: #667eea;">🔁 PDCA完全サイクルと HuggingFace モデル公開</h3>
+                <div style="background: #fff3e0; padding: 20px; border-radius: 8px; border-left: 4px solid #ff6f00; margin-bottom: 20px;">
+                    <strong style="color: #ff6f00;">🎯 戦略: PDCA成果物 → HuggingFace Model Hub で世界公開</strong><br><br>
+                    <strong>1. PLAN フェーズ</strong> (BPMN設計)<br>
+                    &nbsp;&nbsp;&nbsp;└─ プロセス設計 → GitHub Issue として記録<br><br>
+                    <strong>2. DO フェーズ</strong> (実装)<br>
+                    &nbsp;&nbsp;&nbsp;└─ VS Code Copilot が Issue → コード実装<br>
+                    &nbsp;&nbsp;&nbsp;└─ n8n で自動化スクリプト生成<br><br>
+                    <strong>3. CHECK フェーズ</strong> (テスト)<br>
+                    &nbsp;&nbsp;&nbsp;└─ pytest で品質保証<br>
+                    &nbsp;&nbsp;&nbsp;└─ GitHub Actions で CI/CD実行<br><br>
+                    <strong>4. ACT フェーズ</strong> (デプロイ＆公開)<br>
+                    &nbsp;&nbsp;&nbsp;├─ 🔥 GAS で世界展開（サーバーレス）<br>
+                    &nbsp;&nbsp;&nbsp;├─ ☁️ HuggingFace Model Hub で成果物公開 ✨<br>
+                    &nbsp;&nbsp;&nbsp;├─ 📄 GitHub Pages でドキュメント公開<br>
+                    &nbsp;&nbsp;&nbsp;└─ 🔄 n8n で次の PLAN へループ<br><br>
+                    <strong style="color: #ff6f00;">→ 世界中の開発者がモデルを自由に使用・改善可能！</strong>
+                </div>
+                
+                <h3 style="margin-bottom: 15px; color: #667eea;">📊 公開される成果物</h3>
+                <div class="grid">
+                    <div class="card">
+                        <h3>🔥 GAS Apps</h3>
+                        <p style="color: #666; margin-bottom: 15px; font-size: 0.95em;">
+                            <strong>役割:</strong> BPMN Designer、自動化スクリプト、データ処理を HuggingFace Models で公開。Google Cloud で世界展開。
+                        </p>
+                        <ul>
+                            <li><a href="https://huggingface.co/spaces" target="_blank">🤖 HuggingFace Spaces</a></li>
+                            <li><strong>App Type:</strong> GAS-based Streamlit/Gradio</li>
+                            <li><strong>Deployment:</strong> Serverless (Global)</li>
+                            <li><strong>Models:</strong> BPMN Designer, Form Generator, n8n Converter</li>
+                            <li><strong>License:</strong> Apache 2.0 / MIT</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="card">
+                        <h3>🧠 AI Models</h3>
+                        <p style="color: #666; margin-bottom: 15px; font-size: 0.95em;">
+                            <strong>役割:</strong> fine-tuned モデル、意思決定エンジン、分類器。HuggingFace Model Hub で共有。
+                        </p>
+                        <ul>
+                            <li><a href="https://huggingface.co/models" target="_blank">🤖 HuggingFace Model Hub</a></li>
+                            <li><strong>Model Types:</strong> LLM, Classification, Generation</li>
+                            <li><strong>Fine-tuning:</strong> Project特有の Issue→Code パターン</li>
+                            <li><strong>Usage:</strong> Copilot + n8n統合</li>
+                            <li><strong>Community:</strong> フィードバック＆改善ループ</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="card">
+                        <h3>📦 Datasets</h3>
+                        <p style="color: #666; margin-bottom: 15px; font-size: 0.95em;">
+                            <strong>役割:</strong> PDCA実行データセット。Issue→実装→テスト→結果の完全ログ。トレーニング用データ。
+                        </p>
+                        <ul>
+                            <li><a href="https://huggingface.co/datasets" target="_blank">📊 HuggingFace Datasets</a></li>
+                            <li><strong>Data:</strong> GitHub Issues, Code Commits, Test Results</li>
+                            <li><strong>Format:</strong> JSON, CSV, Parquet</li>
+                            <li><strong>Purpose:</strong> Model Training, Pattern Recognition</li>
+                            <li><strong>Open Source:</strong> CC0 / CC-BY-SA</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="card">
+                        <h3>📖 Documentation</h3>
+                        <p style="color: #666; margin-bottom: 15px; font-size: 0.95em;">
+                            <strong>役割:</strong> Model Card、実装ガイド、結果レポート。複数言語対応。
+                        </p>
+                        <ul>
+                            <li><strong>Model Cards:</strong> Hugging Face公式形式</li>
+                            <li><strong>Languages:</strong> 日本語, English, 中文</li>
+                            <li><strong>Sections:</strong> Architecture, Training, Results, Limitations</li>
+                            <li><strong>License:</strong> CC-BY-4.0</li>
+                            <li><strong>Updates:</strong> 毎PDCAサイクル更新</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <h3 style="margin-top: 30px; margin-bottom: 15px; color: #667eea;">🌍 世界展開メカニズム</h3>
+                <div style="background: #f3e5f5; padding: 20px; border-radius: 8px; margin-bottom: 20px;">
+                    <strong>1️⃣ ACT フェーズ → HuggingFace 自動公開</strong><br>
+                    &nbsp;&nbsp;&nbsp;ユーザーがコード push → GitHub Actions トリガー → モデル自動アップロード<br><br>
+                    <strong>2️⃣ HuggingFace Hub</strong><br>
+                    &nbsp;&nbsp;&nbsp;✅ URL短縮（huggingface.co/spaces/kenken999/...）<br>
+                    &nbsp;&nbsp;&nbsp;✅ Version管理（Git LFS）<br>
+                    &nbsp;&nbsp;&nbsp;✅ ダウンロード統計<br><br>
+                    <strong>3️⃣ 世界中の開発者</strong><br>
+                    &nbsp;&nbsp;&nbsp;🌐 日本 / アメリカ / ヨーロッパ / アジア<br>
+                    &nbsp;&nbsp;&nbsp;📥 自由にダウンロード・利用<br>
+                    &nbsp;&nbsp;&nbsp;💬 Discussion / Issues で改善提案<br><br>
+                    <strong>4️⃣ フィードバック → 次の PLAN へ</strong><br>
+                    &nbsp;&nbsp;&nbsp;🔄 Issue 作成 → DO → CHECK → ACT... 継続改善
                 </div>
             </div>
             
