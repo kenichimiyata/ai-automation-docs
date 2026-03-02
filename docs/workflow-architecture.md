@@ -49,6 +49,7 @@ C:\xampp\htdocs\
 │   │   └── .github/workflows/
 │   │       ├── test.yml
 │   │       ├── notify-parent-on-push.yml
+│   │       ├── notify-pr-to-googlechat.yml      # PR → Google Chat 通知 🔀 NEW (2026-03-02)
 │   │       ├── monitor-pages.yml
 │   │       ├── capture-screenshot.yml
 │   │       └── capture-on-error.yml
@@ -119,7 +120,7 @@ C:\xampp\htdocs\
 | ワークフロー | プロジェクト | 機能 | トリガー |
 |------------|------------|------|---------|
 | `notify-issue-to-googlechat.yml` | ai-automation-dashboard, PhPRunner_11 | Issue → Google Chat 通知 | `issues: [opened, edited]` |
-| `notify-pr-to-googlechat.yml` 🔀 | PhPRunner_11 | PR → Google Chat 通知 | `pull_request: [opened]` |
+| `notify-pr-to-googlechat.yml` 🔀 | PhPRunner_11, shop11 | PR → Google Chat 通知 | `pull_request: [opened]` |
 | `notify-issue-card-to-googlechat.yml` | ai-automation-dashboard | カード形式で通知（リッチ） | `issues: [opened]` |
 | `workflow-status-check.yml` ✨ | ai-automation-dashboard | ワークフロー実行状態確認 | `issues`, `workflow_run` |
 | `notify-parent-on-push.yml` | shop11 | Push 時に親リポジトリへ通知 | `push` |
