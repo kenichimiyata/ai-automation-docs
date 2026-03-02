@@ -17,8 +17,9 @@ A system that automatically:
 
 ## Quick Links
 
-- **[🏗️ Architecture Diagrams](architecture-diagram)** - システム全体図・データフロー・noVNC Gateway ⭐ NEW
-- **[🌳 Workflow Architecture](workflow-architecture)** - ワークフロー構造 - プロジェクト横断整理 ⭐ NEW
+- **[🤖 AI-to-AI Coordination](ai-to-ai-coordination)** - ローカル→リモート Copilot 開発フロー 🎉 NEW (2026-03-02)
+- **[🏗️ Architecture Diagrams](architecture-diagram)** - システム全体図・データフロー・noVNC Gateway
+- **[🌳 Workflow Architecture](workflow-architecture)** - ワークフロー構造 - プロジェクト横断整理
 - [Architecture](architecture) - 技術詳細
 - [Milestone 1 - Supabase Setup](milestone-1)
 - [Milestone 2 - GitHub Actions](milestone-2)
