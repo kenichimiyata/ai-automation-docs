@@ -17,9 +17,13 @@ C:\xampp\htdocs\
 ├── 🤖 AI Automation Platform (メインプロジェクト)
 │   ├── ai-automation-dashboard/          # kenichimiyata - 実装ハブ
 │   │   └── .github/workflows/
-│   │       ├── sync-issues.yml           # Issue → Supabase 同期 ⭐
-│   │       ├── test.yml                  # pytest 自動テスト
-│   │       └── bpmn-flow-demo.yml        # BPMN デモ
+│   │       ├── sync-issues.yml                      # Issue → Supabase 同期 ⭐
+│   │       ├── auto-assign-copilot.yml              # Copilot 自動割り当て ✅ (2026-03-02)
+│   │       ├── notify-issue-to-googlechat.yml       # Google Chat 通知 ✅ (2026-03-02)
+│   │       ├── notify-issue-card-to-googlechat.yml  # Google Chat カード通知 ✅ (2026-03-02)
+│   │       ├── workflow-status-check.yml            # ワークフロー状態確認 🔍 NEW (2026-03-02)
+│   │       ├── test.yml                             # pytest 自動テスト
+│   │       └── bpmn-flow-demo.yml                   # BPMN デモ
 │   │
 │   ├── ai-automation-docs/               # kenichimiyata - ドキュメント
 │   │   └── .github/workflows/
@@ -113,13 +117,45 @@ C:\xampp\htdocs\
 
 | ワークフロー | プロジェクト | 機能 | トリガー |
 |------------|------------|------|---------|
-| `notify-issue-to-googlechat.yml` | PhPRunner_11 | Issue → Google Chat 通知 | `issues: [opened, edited]` |
-| `notify-issue-card-to-googlechat.yml` | PhPRunner_11 | カード形式で通知（リッチ） | `issues: [opened]` |
+| `notify-issue-to-googlechat.yml` | ai-automation-dashboard | Issue → Google Chat 通知 | `issues: [opened, edited]` |
+| `notify-issue-card-to-googlechat.yml` | ai-automation-dashboard | カード形式で通知（リッチ） | `issues: [opened]` |
+| `workflow-status-check.yml` ✨ | ai-automation-dashboard | ワークフロー実行状態確認 | `issues`, `workflow_run` |
 | `notify-parent-on-push.yml` | shop11 | Push 時に親リポジトリへ通知 | `push` |
 
+#### 🔍 workflow-status-check.yml（NEW 2026-03-02）
+
+**目的:** 全ワークフローの実行状態を可視化・通知
+
+**機能:**
+- Issue 作成/編集時にトリガー
+- 他のワークフロー完了時にもトリガー（`workflow_run`）
+- GitHub Actions 実行履歴を取得
+- Google Chat にワークフロー状態をまとめて通知
+- Actions サマリーに実行状態を出力
+
+**通知内容:**
+```
+🔍 ワークフロー実行確認
+
+📌 トリガー: issues
+🎯 Issue: #43
+📋 タイトル: FINAL TEST
+⏰ 実行時刻: 2026-03-02 10:30:00
+
+🔸 実行中のワークフロー:
+  - 🤖 Auto-Assign Copilot
+  - 📢 Google Chat 通知 (テキスト)
+  - 📢 Google Chat 通知 (カード)
+  - 🔄 Supabase 同期
+
+✅ このワークフローで実行状態を確認できます
+🔗 Actions: https://github.com/...
+```
+
 **統合状況:**
-- ✅ `sync-issues.yml` に Google Chat 通知統合済み
-- ✅ VS Code Realtime 通知も実装済み
+- ✅ PhPRunner_11 から通知ワークフロー3つ移行完了
+- ✅ 新規に状態確認ワークフロー追加
+- ✅ VS Code Realtime 通知は sync-issues.yml に統合済み
 
 ---
 
@@ -169,100 +205,137 @@ C:\xampp\htdocs\
 
 ## 🔄 統合計画 - Milestone 3
 
-### 現在の実装状況
+### ✅ 統合完了済み（2026-03-02）
+
+**PhPRunner_11 から ai-automation-dashboard へワークフロー移行完了:**
+
+1. ✅ `auto-assign-copilot.yml` - Copilot 自動割り当て
+2. ✅ `notify-issue-to-googlechat.yml` - Google Chat 通知（テキスト）
+3. ✅ `notify-issue-card-to-googlechat.yml` - Google Chat 通知（カード形式）
+
+**動作確認:**
+- Issue #43 で kenichimiyata + copilot-swe-agent 自動アサイン成功
+- Google Chat への通知配信成功
+- GH_TOKEN, GOOGLE_CHAT_WEBHOOK 設定済み
+
+### 現在の実装状況（統合後）
 
 ```mermaid
 graph LR
-    A[GitHub Issue Created] --> B[sync-issues.yml]
-    B --> C[Issue Type Check]
-    C --> D[Supabase Sync]
-    D --> E[Google Chat]
-    D --> F[VS Code Realtime]
+    A[GitHub Issue Created] --> B[auto-assign-copilot.yml]
+    B --> C[Issue Creator Assignment]
+    C --> D[Copilot Bot Assignment]
+    
+    A --> E[notify-issue-*.yml]
+    E --> F[Google Chat Notification]
+    
+    A --> G[sync-issues.yml]
+    G --> H[Issue Type Check]
+    H --> I[Supabase Sync]
+    I --> J[VS Code Realtime]
     
     style B fill:#90EE90
     style D fill:#90EE90
     style E fill:#90EE90
     style F fill:#90EE90
-```
-
-### 追加する機能（PhPRunner_11 から統合）
-
-```mermaid
-graph LR
-    A[GitHub Issue Created] --> B[sync-issues.yml]
-    B --> C[Issue Type Check]
-    C --> D[Supabase Sync]
-    D --> E[🆕 AI Agent Assignment]
-    E --> F[🆕 Copilot Auto-Assign]
-    F --> G[Update ai_agent_state]
-    G --> H[Google Chat]
-    G --> I[VS Code Realtime]
-    
-    style E fill:#FFD700
-    style F fill:#FFD700
-    style G fill:#FFD700
+    style G fill:#90EE90
+    style I fill:#90EE90
+    style J fill:#90EE90
 ```
 
 ---
 
 ## 📝 統合タスク一覧
 
-### タスク1: auto-assign-copilot.yml を統合
+### ✅ タスク1: auto-assign-copilot.yml を移行（完了 2026-03-02）
 
-**統合先:** `ai-automation-dashboard/.github/workflows/sync-issues.yml`
+**移行先:** `ai-automation-dashboard/.github/workflows/auto-assign-copilot.yml`
 
-**追加ジョブ:**
+**実装内容:**
+- Issue 作成時に Issue 作成者と copilot-swe-agent を自動アサイン
+- GH_TOKEN を使用（GH_PAT_ASSIGN_BOT から変更）
+- GraphQL API で Bot の Node ID を取得してアサイン
+
+**動作確認:**
+- Issue #43 で正常動作確認済み
+- assignees: kenichimiyata, copilot-swe-agent
+
+### ✅ タスク1.2: Google Chat 通知を移行（完了 2026-03-02）
+
+**移行先:**
+- `notify-issue-to-googlechat.yml` - テキスト通知
+- `notify-issue-card-to-googlechat.yml` - リッチカード通知
+
+**実装内容:**
+- Issue 作成・編集時に Google Chat Space へ通知
+- GOOGLE_CHAT_WEBHOOK secret 設定済み
+- Python requests でシンプル実装
+
+**動作確認:**
+- Issue #41, #42, #43 で通知配信成功
+
+### ⏳ タスク2: VS Code 通知を統合（次のステップ）
+
+**統合先:** `auto-assign-copilot.yml`, `notify-issue-*.yml`
+
+**追加予定:**
 ```yaml
-  assign-to-copilot:
-    name: "🤖 Copilot 自動割り当て"
-    needs: [sync-to-supabase]
-    runs-on: ubuntu-latest
-    steps:
-      - name: Copilot を Issue にアサイン
-        run: |
-          # PhPRunner_11/auto-assign-copilot.yml のロジックを移植
-          gh issue edit ${{ github.event.issue.number }} --add-assignee Copilot
+- name: VS Code Realtime 通知
+  run: |
+    python scripts/notify_vscode.py \
+      "${{ github.event.issue.number }}" \
+      "${{ github.event.issue.title }}" \
+      "opened"
 ```
 
-**メリット:**
-- Issue 作成 → Supabase 同期 → Copilot 割り当ての完全自動化
-- Copilot が割り当てられた Issue を優先処理
+**要件:**
+- Supabase chat_history テーブルへ INSERT
+- VS Code Copilot がリアルタイム受信
+- Issue 番号、タイトル、アクションを通知
 
-### タスク2: cloud-agent.yml の活用検討
+### ⏳ タスク3: cloud-agent.yml の移行検討
 
 **用途:**
 - Issue コメントから直接タスク実行
 - VS Code Copilot からの `/execute` コマンド対応
 
 **統合方針:**
-- 別ワークフローとして残す（異なるトリガー）
-- `issue_comment` イベント専用
-
-### タスク3: ドキュメント更新
-
-- [ ] このファイル (`workflow-architecture.md`) を GitHub Pages に公開
-- [ ] `PROJECT_STRUCTURE.md` にワークフロー構造を追記
-- [ ] `ai-automation-docs/docs/index.md` にリンク追加
+- 別ワークフローとして残す（異なるトリガー: `issue_comment`）
+- 段階的に機能追加
 
 ---
 
-## 🎯 最終ゴール
+## 📅 更新履歴
 
-### 完全自動化フロー
+| 日付 | 更新内容 |
+|------|---------|
+| 2026-03-02 | ✅ PHPRunner_11 から3ワークフロー移行完了 |
+| 2026-02-27 | sync-issues.yml 実装完了 |
+| 2026-02-26 | ドキュメント初版作成 |
+
+---
+
+## 🎯 次のステップ
+
+### 完全自動化フロー（Milestone 3）
 
 ```
 1. GitHub Issue 作成
    ↓
-2. sync-issues.yml 実行
-   ├─ Issue 種別判定
-   ├─ Supabase 同期
-   ├─ AI Agent 割り当て (🆕)
-   ├─ Copilot 自動アサイン (🆕)
-   ├─ ai_agent_state 更新 (🆕)
-   ├─ Google Chat 通知
-   └─ VS Code Realtime 通知
+2. ⚡ 並列実行（3つのワークフロー）
+   ├─ auto-assign-copilot.yml
+   │  ├─ Issue 作成者アサイン
+   │  └─ copilot-swe-agent アサイン ✅
+   │
+   ├─ notify-issue-*.yml
+   │  └─ Google Chat 通知 ✅
+   │
+   └─ sync-issues.yml
+      ├─ Issue 種別判定
+      ├─ Supabase 同期
+      └─ VS Code Realtime 通知
    ↓
-3. VS Code Copilot が自動受信
+3. 🔜 次フェーズ: VS Code Copilot が自動受信
    ├─ Issue 内容を解析
    ├─ 自動コード生成
    └─ Pull Request 作成
@@ -271,6 +344,12 @@ graph LR
    ↓
 5. ai_agent_state を idle に戻す
 ```
+
+**現在の進捗:**
+- ✅ Phase 1: Issue → Copilot 自動アサイン
+- ✅ Phase 2: Google Chat 通知
+- ⏳ Phase 3: VS Code リアルタイム通知統合
+- ⏳ Phase 4: Copilot 自動応答・PR 作成
 
 ---
 
