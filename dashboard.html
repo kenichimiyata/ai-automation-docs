@@ -252,20 +252,30 @@
                     </div>
                 </div>
                 
-                <h3 style="margin-top: 30px; margin-bottom: 15px; color: #667eea;">🔄 サービス連携フロー（PDCA全体像）</h3>
+                <h3 style="margin-top: 30px; margin-bottom: 15px; color: #667eea;">🔄 サービス連携フロー（BPMN中心設計）</h3>
+                <div style="background: #f0f7ff; padding: 15px; border-radius: 8px; border-left: 4px solid #667eea; margin-bottom: 15px;">
+                    <strong>💡 設計思想:</strong><br>
+                    <strong>1. BPMN = 人間+AI用設計ツール</strong> → プロセス可視化・GitHub Issue（指示書）作成<br>
+                    <strong>2. n8n = 自動化実行エンジン</strong> → BPMNから変換・Webhook自動処理<br>
+                    <strong>3. HTML画面 = n8nが生成</strong> → Webhook ResponseでHTML5返却 → Supabase登録<br>
+                    <strong>4. 段階的進化</strong> → 最初はn8nのHTML表示をコピー → 徐々に独自UI化
+                </div>
                 <div style="background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
                     <div class="mermaid">
 graph TB
-    subgraph PLAN["🎯 PLAN Phase"]
-        A[👤 Google Form<br/>人間入力]
-        B[🔄 n8n Workflow #1<br/>Issue生成]
+    subgraph PLAN["🎯 PLAN Phase - 設計と指示書作成"]
+        A0[📐 BPMN Designer<br/>プロセス設計]
+        A1[📝 GitHub Issue<br/>指示書作成]
+        A[👤 Google Form<br/>追加要件入力]
+        B[🔄 n8n Workflow #1<br/>Issue更新]
         C[🗄️ Supabase<br/>データ同期]
         D[⚙️ GitHub Actions<br/>通知送信]
     end
     
-    subgraph DO["🚀 DO Phase"]
+    subgraph DO["🚀 DO Phase - Issue（指示書）に従って実装"]
+        E0[📌 GitHub Issue<br/>人/AI割り当て]
         E[🤖 VS Code Copilot<br/>AI実装支援]
-        F[📐 BPMN Designer<br/>プロセス設計]
+        F[📐 BPMN Designer<br/>詳細設計]
         G[💾 GitHub<br/>コード管理]
         H[🔄 n8n Workflow #3<br/>PR自動作成]
     end
@@ -282,10 +292,13 @@ graph TB
         N[🗄️ Supabase<br/>履歴保存]
     end
     
+    A0 --> A1
+    A1 --> A
     A --> B
     B --> C
     C --> D
-    D --> E
+    D --> E0
+    E0 --> E
     E --> F
     F --> G
     G --> H
@@ -295,12 +308,15 @@ graph TB
     K --> L
     L --> M
     M --> N
-    N -.-> A
+    N -.-> A0
     
+    style A0 fill:#ffe1f5
+    style A1 fill:#fff4e1
     style A fill:#e1f5ff
     style B fill:#f0e1ff
     style C fill:#fff4e1
     style D fill:#e1ffe1
+    style E0 fill:#ffe1e1
     style E fill:#e1f5ff
     style F fill:#ffe1f5
     style G fill:#e1ffe1
@@ -331,7 +347,7 @@ graph TB
                     <div class="card">
                         <h3>🔄 n8n Workflows<span class="badge active">Active</span></h3>
                         <p style="color: #666; margin-bottom: 15px; font-size: 0.95em;">
-                            <strong>役割:</strong> Webhook受信→自動処理の中核。Google FormからIssue生成、PR作成、デプロイまでを自動化。
+                            <strong>役割:</strong> Webhook受信→自動処理の中核。<strong>Webhook ResponseでHTML5画面生成</strong>し、Issue/PR/Deployを自動化。BPMNから変換された設計を実行。
                         </p>
                         <ul>
                             <li><a href="https://kenken999-n8n-free.hf.space" target="_blank">n8n Dashboard</a></li>
@@ -345,13 +361,13 @@ graph TB
                     <div class="card">
                         <h3>⚙️ GitHub Actions<span class="badge active">Active</span></h3>
                         <p style="color: #666; margin-bottom: 15px; font-size: 0.95em;">
-                            <strong>役割:</strong> Issue/PR発生時にSupabase同期・通知・pytest実行。CI/CDパイプラインの基盤。
+                            <strong>役割:</strong> Issue作成時に人間またはリモートAI（Copilot）に自動割り当て。Supabase同期・通知・pytest実行。CI/CDパイプラインの基盤。
                         </p>
                         <ul>
                             <li><a href="https://github.com/kenichimiyata/ai-automation-dashboard/actions" target="_blank">Actions Dashboard</a></li>
                             <li><strong>Workflow:</strong> sync-issues.yml</li>
-                            <li><strong>Jobs:</strong> Sync, Notify, Test</li>
-                            <li><strong>Status:</strong> Milestone 2 Complete</li>
+                            <li><strong>Key Jobs:</strong> Assign (人/AI割り当て), Sync, Notify, Test</li>
+                            <li><strong>Status:</strong> Milestone 3 - Assignment Feature ⏳</li>
                         </ul>
                     </div>
                     
@@ -377,7 +393,7 @@ graph TB
                     <div class="card">
                         <h3>📐 BPMN Designer<span class="badge new">New</span></h3>
                         <p style="color: #666; margin-bottom: 15px; font-size: 0.95em;">
-                            <strong>役割:</strong> Human+AI協働でビジネスプロセスを可視化。Supabaseに保存し、n8n/GitHub Actions/Mermaidに変換・デプロイ。
+                            <strong>役割:</strong> 人間+AI協働でプロセス設計。<strong>n8nに変換→HTML画面自動生成→Supabase登録</strong>。最初はn8nのWebhook Response HTMLをそのまま使用。段階的にカスタムUI化。
                         </p>
                         <ul>
                             <li><a href="docs/bpmn-designer.html" target="_blank">Open Designer</a></li>
