@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Automation Platform - Dashboard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+        
+        .header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+        
+        .nav {
+            display: flex;
+            background: #f5f5f5;
+            border-bottom: 2px solid #e0e0e0;
+            overflow-x: auto;
+        }
+        
+        .nav-item {
+            padding: 15px 25px;
+            cursor: pointer;
+            white-space: nowrap;
+            font-weight: 600;
+            transition: all 0.3s;
+            border-bottom: 3px solid transparent;
+        }
+        
+        .nav-item:hover {
+            background: #e8e8e8;
+        }
+        
+        .nav-item.active {
+            background: white;
+            color: #667eea;
+            border-bottom-color: #667eea;
+        }
+        
+        .content {
+            padding: 30px;
+        }
+        
+        .section {
+            display: none;
+        }
+        
+        .section.active {
+            display: block;
+        }
+        
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+        
+        .card {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+        }
+        
+        .card h3 {
+            color: #667eea;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .card ul {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .card li {
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.3);
+        }
+        
+        .card li:last-child {
+            border-bottom: none;
+        }
+        
+        .card a {
+            color: #764ba2;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        
+        .card a:hover {
+            color: #667eea;
+            text-decoration: underline;
+        }
+        
+        .badge {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.8em;
+            font-weight: 600;
+            margin-left: 8px;
+        }
+        
+        .badge.new {
+            background: #e1ffe1;
+            color: #00aa00;
+        }
+        
+        .badge.active {
+            background: #e1f5ff;
+            color: #0066cc;
+        }
+        
+        .badge.pending {
+            background: #ffe1e1;
+            color: #cc0000;
+        }
+        
+        .stats {
+            display: flex;
+            justify-content: space-around;
+            margin: 30px 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 8px;
+            color: white;
+        }
+        
+        .stat {
+            text-align: center;
+        }
+        
+        .stat-value {
+            font-size: 2.5em;
+            font-weight: bold;
+            display: block;
+        }
+        
+        .stat-label {
+            font-size: 0.9em;
+            opacity: 0.9;
+            margin-top: 5px;
+        }
+        
+        .file-list {
+            background: #f9f9f9;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 15px;
+        }
+        
+        .file-item {
+            padding: 10px;
+            border-bottom: 1px solid #e0e0e0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .file-item:last-child {
+            border-bottom: none;
+        }
+        
+        .file-name {
+            font-weight: 600;
+            color: #333;
+        }
+        
+        .file-desc {
+            color: #666;
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🚀 AI Automation Platform</h1>
+            <p>統合ダッシュボード - HuggingFace Laravel & GitHub Pages</p>
+        </div>
+        
+        <div class="nav">
+            <div class="nav-item active" onclick="showSection('services')">📡 Services</div>
+            <div class="nav-item" onclick="showSection('tools')">🛠️ Tools</div>
+            <div class="nav-item" onclick="showSection('docs')">📚 Documentation</div>
+            <div class="nav-item" onclick="showSection('projects')">💼 Projects</div>
+            <div class="nav-item" onclick="showSection('files')">📁 Files</div>
+        </div>
+        
+        <div class="content">
+            <!-- Services Section -->
+            <div id="services" class="section active">
+                <h2>📡 Services</h2>
+                <div class="stats">
+                    <div class="stat">
+                        <span class="stat-value">4</span>
+                        <span class="stat-label">Active Services</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-value">85%</span>
+                        <span class="stat-label">Automation Rate</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-value">17</span>
+                        <span class="stat-label">Automated Steps</span>
+                    </div>
+                </div>
+                
+                <div class="grid">
+                    <div class="card">
+                        <h3>🗄️ Supabase<span class="badge active">Active</span></h3>
+                        <p style="color: #666; margin-bottom: 15px; font-size: 0.95em;">
+                            <strong>役割:</strong> GitHubのIssue・PR・AI応答を永続化し、リアルタイム同期。RLSでセキュアなデータ管理を実現。
+                        </p>
+                        <ul>
+                            <li><a href="https://supabase.com/dashboard/project/rootomzbucovwdqsscqd" target="_blank">Dashboard</a></li>
+                            <li><strong>Tables:</strong> github_issues, ai_responses, ai_agent_state</li>
+                            <li><strong>RLS:</strong> ✅ Enabled (8 policies)</li>
+                            <li><strong>Realtime:</strong> ✅ Enabled</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="card">
+                        <h3>🔄 n8n Workflows<span class="badge active">Active</span></h3>
+                        <p style="color: #666; margin-bottom: 15px; font-size: 0.95em;">
+                            <strong>役割:</strong> Webhook受信→自動処理の中核。Google FormからIssue生成、PR作成、デプロイまでを自動化。
+                        </p>
+                        <ul>
+                            <li><a href="https://kenken999-n8n-free.hf.space" target="_blank">n8n Dashboard</a></li>
+                            <li><strong>Workflow #1:</strong> Google Form → Issue</li>
+                            <li><strong>Workflow #2:</strong> Issue Classification</li>
+                            <li><strong>Workflow #3:</strong> Branch → PR Creation</li>
+                            <li><strong>Workflow #4:</strong> PR → Deploy</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="card">
+                        <h3>⚙️ GitHub Actions<span class="badge active">Active</span></h3>
+                        <p style="color: #666; margin-bottom: 15px; font-size: 0.95em;">
+                            <strong>役割:</strong> Issue/PR発生時にSupabase同期・通知・pytest実行。CI/CDパイプラインの基盤。
+                        </p>
+                        <ul>
+                            <li><a href="https://github.com/kenichimiyata/ai-automation-dashboard/actions" target="_blank">Actions Dashboard</a></li>
+                            <li><strong>Workflow:</strong> sync-issues.yml</li>
+                            <li><strong>Jobs:</strong> Sync, Notify, Test</li>
+                            <li><strong>Status:</strong> Milestone 2 Complete</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="card">
+                        <h3>🤖 VS Code Copilot<span class="badge active">Active</span></h3>
+                        <p style="color: #666; margin-bottom: 15px; font-size: 0.95em;">
+                            <strong>役割:</strong> AI開発パートナー。プロジェクト全体を理解し、Issue→実装→テスト→ドキュメント作成を支援。
+                        </p>
+                        <ul>
+                            <li><strong>Mode:</strong> Cloud (Claude Sonnet 4.5)</li>
+                            <li><strong>Features:</strong> Multi-repo, Auto-context</li>
+                            <li><strong>Extensions:</strong> copilot-input-helper</li>
+                            <li><a href="docs/vscode-copilot-guide.md">Usage Guide</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Tools Section -->
+            <div id="tools" class="section">
+                <h2>🛠️ Tools</h2>
+                <div class="grid">
+                    <div class="card">
+                        <h3>📐 BPMN Designer<span class="badge new">New</span></h3>
+                        <p style="color: #666; margin-bottom: 15px; font-size: 0.95em;">
+                            <strong>役割:</strong> Human+AI協働でビジネスプロセスを可視化。Supabaseに保存し、n8n/GitHub Actions/Mermaidに変換・デプロイ。
+                        </p>
+                        <ul>
+                            <li><a href="docs/bpmn-designer.html" target="_blank">Open Designer</a></li>
+                            <li><strong>Features:</strong> Human + AI Collaboration</li>
+                            <li><strong>Storage:</strong> Supabase (bpmn_workflows table)</li>
+                            <li><strong>Export:</strong> BPMN JSON, Mermaid, GitHub Actions</li>
+                            <li><strong>Import:</strong> n8n JSON → BPMN</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="card">
+                        <h3>🔄 PDCA Flow Viewer<span class="badge new">New</span></h3>
+                        <p style="color: #666; margin-bottom: 15px; font-size: 0.95em;">
+                            <strong>役割:</strong> 85%自動化されたPDCA全体を可視化。Google Form→Issue→実装→PR→Deploy→記録の循環を一目で把握。
+                        </p>
+                        <ul>
+                            <li><a href="pdca-flow-simple.html" target="_blank">Simple Viewer</a></li>
+                            <li><a href="pdca-flow-viewer.html" target="_blank">Full Viewer</a></li>
+                            <li><strong>Visualization:</strong> Mermaid Diagram</li>
+                            <li><strong>Coverage:</strong> Plan → Do → Check → Act</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="card">
+                        <h3>🗺️ DHTMLX Navigator</h3>
+                        <p style="color: #666; margin-bottom: 15px; font-size: 0.95em;">
+                            <strong>役割:</strong> 全HTMLアプリケーションを統合ナビゲート。Tree表示でプロジェクト・ツール・ドキュメントを一元管理。
+                        </p>
+                        <ul>
+                            <li><a href="/applications.html" target="_blank">Applications Navigator</a></li>
+                            <li><a href="/dhtmlx_navigator.html" target="_blank">DHTMLX Test</a></li>
+                            <li><strong>Widgets:</strong> Navigator, Tree, Layout</li>
+                            <li><strong>Purpose:</strong> Unified App Navigation</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="card">
+                        <h3>📊 Mermaid Viewer</h3>
+                        <p style="color: #666; margin-bottom: 15px; font-size: 0.95em;">
+                            <strong>役割:</strong> n8nワークフローをMermaid図に変換・可視化。フロー、シーケンス、ガントチャートで複雑な自動化を理解。
+                        </p>
+                        <ul>
+                            <li><a href="/mermaid_viewer.html" target="_blank">Mermaid Viewer</a></li>
+                            <li><a href="/n8n_mermaid_dash.html" target="_blank">n8n Mermaid Dashboard</a></li>
+                            <li><a href="/n8n_local_visualizer.html" target="_blank">n8n Local Visualizer</a></li>
+                            <li><strong>Format:</strong> Flowchart, Sequence, Gantt</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Documentation Section -->
+            <div id="docs" class="section">
+                <h2>📚 Documentation</h2>
+                <div class="grid">
+                    <div class="card">
+                        <h3>📖 Setup Guides</h3>
+                        <p style="color: #666; margin-bottom: 15px; font-size: 0.95em;">
+                            <strong>役割:</strong> 0から環境構築するための完全ガイド。Webhook設定、Copilot活用、ヘルスモニタリング、PHPRunner設定を網羅。
+                        </p>
+                        <ul>
+                            <li><a href="n8n_workflows/SETUP_COMPLETE.md">Webhook Setup Guide</a></li>
+                            <li><a href="docs/vscode-copilot-guide.md">VS Code Copilot Guide</a></li>
+                            <li><a href="HEALTH_MONITORING_README.md">Health Monitoring</a></li>
+                            <li><a href="phprunner_json_editor_README.md">PHPRunner JSON Editor</a></li>
+                        </ul>
+                    </div>
+                    
+                    <div class="card">
+                        <h3>🏗️ Architecture</h3>
+                        <p style="color: #666; margin-bottom: 15px; font-size: 0.95em;">
+                            <strong>役割:</strong> システム全体設計の青写真。4サービス連携、PDCAフロー、フォルダー構成、実装計画を文書化。
+                        </p>
+                        <ul>
+                            <li><a href="AI_AUTOMATION_PLATFORM_ARCHITECTURE.md">Platform Architecture</a></li>
+                            <li><a href="docs/pdca-flow.md">PDCA Cycle Flow</a></li>
+                            <li><a href="PROJECT_STRUCTURE.md">Project Structure</a></li>
+                            <li><a href="IMPLEMENTATION_PLAN.md">Implementation Plan</a></li>
+                        </ul>
+                    </div>
+                    
+                    <div class="card">
+                        <h3>📋 API References</h3>
+                        <p style="color: #666; margin-bottom: 15px; font-size: 0.95em;">
+                            <strong>役割:</strong> 各サービスAPIの完全リファレンス。Supabaseスキーマ、Webhook URL、GitHub/Supabase APIの使い方を記載。
+                        </p>
+                        <ul>
+                            <li><a href="supabase/github_issues_table.sql">Supabase Schema</a></li>
+                            <li><a href="n8n_workflows/webhook_urls.json">Webhook URLs</a></li>
+                            <li><strong>GitHub API:</strong> Issues, PRs, Actions</li>
+                            <li><strong>Supabase API:</strong> CRUD, RLS, Realtime</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="card">
+                        <h3>📝 Workflow Specs</h3>
+                        <p style="color: #666; margin-bottom: 15px; font-size: 0.95em;">
+                            <strong>役割:</strong> n8n 4ワークフローのJSON仕様書。Form→Issue→PR→Deploy の各フェーズの詳細設定とノード構成。
+                        </p>
+                        <ul>
+                            <li><a href="n8n_workflows/n8n_workflow_1_google_form_to_issue.json">Workflow #1 Spec</a></li>
+                            <li><a href="n8n_workflows/n8n_workflow_2_issue_classification.json">Workflow #2 Spec</a></li>
+                            <li><a href="n8n_workflows/n8n_workflow_3_branch_to_pr.json">Workflow #3 Spec</a></li>
+                            <li><a href="n8n_workflows/n8n_workflow_4_pr_to_deploy.json">Workflow #4 Spec</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Projects Section -->
+            <div id="projects" class="section">
+                <h2>💼 Projects</h2>
+                <div class="grid">
+                    <div class="card">
+                        <h3>📦 PhPRunner 11<span class="badge active">Active</span></h3>
+                        <p style="color: #666; margin-bottom: 15px; font-size: 0.95em;">
+                            <strong>役割:</strong> Supabase PostgreSQL用のノーコードCRUD管理画面生成。JSON履歴追跡でデータ変更を完全記録。
+                        </p>
+                        <ul>
+                            <li><strong>Path:</strong> /PhPRunner_11/</li>
+                            <li><strong>Version:</strong> 11.1</li>
+                            <li><strong>Database:</strong> PostgreSQL (Supabase)</li>
+                            <li><strong>Features:</strong> JSON Editor, History Tracking</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="card">
+                        <h3>🏠 localProject<span class="badge active">Active</span></h3>
+                        <p style="color: #666; margin-bottom: 15px; font-size: 0.95em;">
+                            <strong>役割:</strong> FastAPI+Django統合システム。自動統合・AI継続開発・命名規則によるルーター自動検出を実装。
+                        </p>
+                        <ul>
+                            <li><strong>Path:</strong> /localProject/</li>
+                            <li><strong>Stack:</strong> FastAPI + Django + Main + Live</li>
+                            <li><strong>Wiki:</strong> <a href="/localProject/AUTOCREATE.wiki/">AUTOCREATE.wiki</a></li>
+                            <li><strong>Integration:</strong> Auto-router detection</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="card">
+                        <h3>🛒 shop11<span class="badge pending">Pending</span></h3>
+                        <p style="color: #666; margin-bottom: 15px; font-size: 0.95em;">
+                            <strong>役割:</strong> EC（通販）システム開発中プロジェクト。複数バックアップ管理でリスク分散し段階的構築。
+                        </p>
+                        <ul>
+                            <li><strong>Path:</strong> /shop11/</li>
+                            <li><strong>Branch:</strong> develop</li>
+                            <li><strong>Status:</strong> In Development</li>
+                            <li><strong>Backups:</strong> shop11_backup/, shop11_build/</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="card">
+                        <h3>🖥️ evaProject</h3>
+                        <p style="color: #666; margin-bottom: 15px; font-size: 0.95em;">
+                            <strong>役割:</strong> 安定稼働中の既存プロジェクト。urlounge-ds組織管理。保守・運用フェーズ。
+                        </p>
+                        <ul>
+                            <li><strong>Path:</strong> /evaProject/</li>
+                            <li><strong>Owner:</strong> urlounge-ds</li>
+                            <li><strong>Status:</strong> Stable</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Files Section -->
+            <div id="files" class="section">
+                <h2>📁 Key Files</h2>
+                
+                <h3>HTML Applications</h3>
+                <div class="file-list">
+                    <div class="file-item">
+                        <div>
+                            <div class="file-name">applications.html</div>
+                            <div class="file-desc">DHTMLX統合ナビゲーター</div>
+                        </div>
+                        <a href="/applications.html" target="_blank">開く</a>
+                    </div>
+                    <div class="file-item">
+                        <div>
+                            <div class="file-name">docs/bpmn-designer.html</div>
+                            <div class="file-desc">BPMN Designer (Human + AI)</div>
+                        </div>
+                        <a href="docs/bpmn-designer.html" target="_blank">開く</a>
+                    </div>
+                    <div class="file-item">
+                        <div>
+                            <div class="file-name">pdca-flow-simple.html</div>
+                            <div class="file-desc">PDCA Cycle Mermaid Viewer</div>
+                        </div>
+                        <a href="pdca-flow-simple.html" target="_blank">開く</a>
+                    </div>
+                    <div class="file-item">
+                        <div>
+                            <div class="file-name">supabase_crud.html</div>
+                            <div class="file-desc">Supabase CRUD Operations</div>
+                        </div>
+                        <a href="/supabase_crud.html" target="_blank">開く</a>
+                    </div>
+                </div>
+                
+                <h3>Python Scripts</h3>
+                <div class="file-list">
+                    <div class="file-item">
+                        <div>
+                            <div class="file-name">scripts/upload_bpmn_to_supabase_v2.py</div>
+                            <div class="file-desc">BPMN Workflow Uploader</div>
+                        </div>
+                    </div>
+                    <div class="file-item">
+                        <div>
+                            <div class="file-name">scripts/sync_github_issues.py</div>
+                            <div class="file-desc">GitHub Issues Sync</div>
+                        </div>
+                    </div>
+                    <div class="file-item">
+                        <div>
+                            <div class="file-name">scripts/check_workflow_status.py</div>
+                            <div class="file-desc">n8n Workflow Status Checker</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <h3>Configuration Files</h3>
+                <div class="file-list">
+                    <div class="file-item">
+                        <div>
+                            <div class="file-name">n8n_workflows/webhook_urls.json</div>
+                            <div class="file-desc">Webhook URL Configuration</div>
+                        </div>
+                    </div>
+                    <div class="file-item">
+                        <div>
+                            <div class="file-name">.github/workflows/sync-issues.yml</div>
+                            <div class="file-desc">GitHub Actions Workflow</div>
+                        </div>
+                    </div>
+                    <div class="file-item">
+                        <div>
+                            <div class="file-name">localProject/.env</div>
+                            <div class="file-desc">Environment Variables</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        function showSection(sectionId) {
+            // Hide all sections
+            document.querySelectorAll('.section').forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            // Remove active class from all nav items
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            
+            // Show selected section
+            document.getElementById(sectionId).classList.add('active');
+            
+            // Add active class to clicked nav item
+            event.target.classList.add('active');
+        }
+    </script>
+</body>
+</html>
