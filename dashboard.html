@@ -284,9 +284,13 @@ graph TB
         I[⚙️ GitHub Actions<br/>pytest実行]
         J[🗄️ Supabase<br/>結果記録]
         K[📊 Mermaid Viewer<br/>フロー確認]
+        I1{✅ テスト<br/>成功?}
     end
     
-    subgraph ACT["🔁 ACT Phase"]
+    subgraph ACT["🔁 ACT Phase - 各サービス割り当て"]
+        I2[☁️ HuggingFace<br/>Deploy実行]
+        I3[📄 GitHub Pages<br/>Deploy実行]
+        I4[🔧 各種API<br/>サービス割り当て]
         L[🔄 n8n Workflow #4<br/>Deploy実行]
         M[🗺️ DHTMLX Navigator<br/>管理画面]
         N[🗄️ Supabase<br/>履歴保存]
@@ -305,7 +309,13 @@ graph TB
     H --> I
     I --> J
     J --> K
-    K --> L
+    K --> I1
+    I1 -->|成功| I2
+    I1 -->|成功| I3
+    I1 -->|成功| I4
+    I2 --> L
+    I3 --> L
+    I4 --> L
     L --> M
     M --> N
     N -.-> A0
@@ -324,6 +334,10 @@ graph TB
     style I fill:#e1ffe1
     style J fill:#fff4e1
     style K fill:#ffe1e1
+    style I1 fill:#fff9e1
+    style I2 fill:#e1ffe1
+    style I3 fill:#e1ffe1
+    style I4 fill:#e1ffe1
     style L fill:#f0e1ff
     style M fill:#e1f5ff
     style N fill:#fff4e1
