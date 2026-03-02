@@ -38,7 +38,8 @@ C:\xampp\htdocs\
 │       └── .github/workflows/
 │           ├── auto-assign-copilot.yml   # Copilot 自動割り当て ⭐
 │           ├── cloud-agent.yml           # Cloud Agent タスク実行 ⭐
-│           ├── notify-issue-to-googlechat.yml
+│           ├── notify-issue-to-googlechat.yml  # Issue → Google Chat 通知 ✅
+│           ├── notify-pr-to-googlechat.yml     # PR → Google Chat 通知 🔀 NEW (2026-03-02)
 │           ├── notify-issue-card-to-googlechat.yml
 │           ├── deploy-n8n-workflows.yml
 │           └── create-issue-via-dispatch.yml
@@ -117,7 +118,8 @@ C:\xampp\htdocs\
 
 | ワークフロー | プロジェクト | 機能 | トリガー |
 |------------|------------|------|---------|
-| `notify-issue-to-googlechat.yml` | ai-automation-dashboard | Issue → Google Chat 通知 | `issues: [opened, edited]` |
+| `notify-issue-to-googlechat.yml` | ai-automation-dashboard, PhPRunner_11 | Issue → Google Chat 通知 | `issues: [opened, edited]` |
+| `notify-pr-to-googlechat.yml` 🔀 | PhPRunner_11 | PR → Google Chat 通知 | `pull_request: [opened]` |
 | `notify-issue-card-to-googlechat.yml` | ai-automation-dashboard | カード形式で通知（リッチ） | `issues: [opened]` |
 | `workflow-status-check.yml` ✨ | ai-automation-dashboard | ワークフロー実行状態確認 | `issues`, `workflow_run` |
 | `notify-parent-on-push.yml` | shop11 | Push 時に親リポジトリへ通知 | `push` |
