@@ -1,0 +1,983 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <base target="_top">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>BPMN Designer - GitHub Integration</title>
+  <script src="https://unpkg.com/gojs/release/go.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+JP:wght@400;500;700&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #0f1718;
+      --panel: #f7f4eb;
+      --ink: #162022;
+      --muted: #5a676d;
+      --line: #d9d5c9;
+      --accent: #db5f2a;
+      --accent2: #1fa692;
+      --human: #2c7fb8;
+      --ai: #a13db6;
+      --warn: #b45309;
+      --ok: #15803d;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: "IBM Plex Sans JP", sans-serif;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 8% 8%, rgba(31, 166, 146, 0.25) 0%, rgba(31, 166, 146, 0) 48%),
+        radial-gradient(circle at 90% 0%, rgba(219, 95, 42, 0.24) 0%, rgba(219, 95, 42, 0) 48%),
+        linear-gradient(145deg, #0b1314 0%, #132022 55%, #1b2a2c 100%);
+      padding: 18px;
+    }
+
+    .page {
+      max-width: 1480px;
+      margin: 0 auto;
+    }
+
+    .head {
+      color: #f4f7f5;
+      margin-bottom: 14px;
+    }
+
+    .head h1 {
+      margin: 0;
+      font-family: "Space Grotesk", sans-serif;
+      font-size: 30px;
+      letter-spacing: 0.3px;
+    }
+
+    .head p {
+      margin: 8px 0 0;
+      color: #ccdbd7;
+      font-size: 14px;
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: 390px 1fr 320px;
+      gap: 14px;
+    }
+
+    .panel {
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      background: rgba(247, 244, 235, 0.96);
+      border-radius: 14px;
+      overflow: hidden;
+      box-shadow: 0 16px 40px rgba(2, 10, 11, 0.25);
+    }
+
+    .panel-head {
+      padding: 12px 14px;
+      border-bottom: 1px solid var(--line);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0));
+    }
+
+    .panel-title {
+      margin: 0;
+      font-family: "Space Grotesk", sans-serif;
+      font-size: 15px;
+    }
+
+    .toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      padding: 10px 12px;
+      border-bottom: 1px solid var(--line);
+      background: #fffdf8;
+    }
+
+    .btn-main, .btn-sub, .file-btn {
+      padding: 8px 14px;
+      border-radius: 6px;
+      font-size: 13px;
+      cursor: pointer;
+      border: none;
+      transition: all 0.16s ease;
+    }
+
+    .btn-main {
+      background: linear-gradient(145deg, #1fa692, #138572);
+      color: #fff;
+      font-weight: 500;
+    }
+
+    .btn-main:hover {
+      transform: scale(1.02);
+      box-shadow: 0 6px 18px rgba(31, 166, 146, 0.3);
+    }
+
+    .btn-sub {
+      background: #e9e7df;
+      color: #162022;
+      border: 1px solid #d9d5c9;
+    }
+
+    .btn-sub:hover {
+      background: #f5f4ef;
+    }
+
+    .btn-github {
+      background: linear-gradient(145deg, #db5f2a, #c34e1f);
+      color: #fff;
+      font-weight: 500;
+    }
+
+    .btn-github:hover {
+      transform: scale(1.02);
+      box-shadow: 0 6px 18px rgba(219, 95, 42, 0.3);
+    }
+
+    .file-btn {
+      background: #e9e7df;
+      color: #162022;
+      border: 1px solid #d9d5c9;
+      display: inline-block;
+    }
+
+    input[type="file"] {
+      display: none;
+    }
+
+    #status {
+      padding: 11px 14px;
+      font-size: 12px;
+      font-weight: 500;
+      border-bottom: 1px solid var(--line);
+      background: #fafafa;
+      color: var(--muted);
+    }
+
+    #status.ok {
+      background: #ecfdf5;
+      color: var(--ok);
+    }
+
+    #status.warn {
+      background: #fffbeb;
+      color: var(--warn);
+    }
+
+    #paletteDiv {
+      background: #fff;
+      min-height: 210px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .hint {
+      padding: 9px 12px;
+      font-size: 11px;
+      color: var(--muted);
+      background: #fefdfb;
+      border-bottom: 1px solid var(--line);
+    }
+
+    #n8nInput {
+      width: 100%;
+      border: none;
+      padding: 12px 14px;
+      font-size: 12px;
+      font-family: Consolas, monospace;
+      line-height: 1.4;
+      background: #fff;
+      color: #162022;
+      min-height: 160px;
+      resize: vertical;
+    }
+
+    .canvas-wrap {
+      display: flex;
+      flex-direction: column;
+    }
+
+    #diagramDiv {
+      flex: 1;
+      background: #f9f8f5;
+      min-height: 680px;
+    }
+
+    .stats {
+      padding: 9px 12px;
+      font-size: 11px;
+      color: var(--muted);
+      border-top: 1px solid var(--line);
+      background: #fefdfb;
+    }
+
+    .field {
+      padding: 11px 14px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .field label {
+      display: block;
+      font-size: 12px;
+      font-weight: 500;
+      margin-bottom: 5px;
+      color: var(--muted);
+    }
+
+    .field input, .field select, .field textarea {
+      width: 100%;
+      padding: 8px 10px;
+      border: 1px solid var(--line);
+      border-radius: 5px;
+      font-size: 13px;
+      font-family: inherit;
+    }
+
+    .field textarea {
+      font-family: Consolas, monospace;
+      background: #fff;
+      color: #162022;
+      min-height: auto;
+      resize: vertical;
+    }
+
+    #detailJson {
+      margin: 0;
+      padding: 12px;
+      background: #11161b;
+      color: #dbe4e8;
+      font-size: 12px;
+      line-height: 1.35;
+      max-height: 220px;
+      overflow: auto;
+      border-top: 1px solid #2c3740;
+    }
+
+    /* GitHub Dialog */
+    .dialog-overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.6);
+      z-index: 9999;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .dialog-overlay.active {
+      display: flex;
+    }
+
+    .dialog-box {
+      background: #f7f4eb;
+      border-radius: 12px;
+      padding: 24px;
+      max-width: 520px;
+      width: 90%;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
+    }
+
+    .dialog-title {
+      margin: 0 0 16px;
+      font-size: 20px;
+      font-family: "Space Grotesk", sans-serif;
+      color: var(--ink);
+    }
+
+    .dialog-field {
+      margin-bottom: 14px;
+    }
+
+    .dialog-field label {
+      display: block;
+      font-size: 13px;
+      font-weight: 500;
+      margin-bottom: 6px;
+      color: var(--muted);
+    }
+
+    .dialog-field input, .dialog-field select {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      font-size: 14px;
+    }
+
+    .dialog-actions {
+      display: flex;
+      gap: 10px;
+      margin-top: 20px;
+    }
+
+    .dialog-actions button {
+      flex: 1;
+      padding: 10px 16px;
+      border-radius: 6px;
+      font-size: 14px;
+      cursor: pointer;
+      border: none;
+      font-weight: 500;
+    }
+
+    @media (max-width: 1280px) {
+      .layout {
+        grid-template-columns: 1fr;
+      }
+
+      #diagramDiv {
+        height: 560px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <header class="head">
+      <h1>🚀 BPMN Designer + GitHub Integration</h1>
+      <p>Human+AI ワークフローを BPMN で設計し、GitHub Issue として AI に自動委譲できます。</p>
+    </header>
+
+    <section class="layout">
+      <aside class="panel">
+        <div class="panel-head">
+          <h2 class="panel-title">Tools + GitHub</h2>
+        </div>
+        <div class="toolbar">
+          <button id="newBtn" class="btn-sub">新規BPMN</button>
+          <button id="seedBtn" class="btn-main">協働テンプレート</button>
+          <button id="applyN8nBtn" class="btn-main">n8nをBPMN化</button>
+          <button id="exportBtn" class="btn-sub">BPMN JSON書出</button>
+          <button id="exportCanonicalBtn" class="btn-sub">共通JSON書出</button>
+          <button id="importCanonicalBtn" class="btn-main">共通JSON読込</button>
+          <button id="exportN8nBtn" class="btn-sub">n8n JSON書出</button>
+          <button id="exportYAMLBtn" class="btn-sub">YAML書出</button>
+          <button id="createGitHubIssueBtn" class="btn-github">🤖 GitHub Issue 作成</button>
+          <label class="file-btn btn-sub" for="jsonFile">JSON読込</label>
+          <input id="jsonFile" type="file" accept=".json,application/json" />
+        </div>
+        <div id="status">Ready.</div>
+        <div class="panel-head">
+          <h3 class="panel-title">BPMN Palette</h3>
+        </div>
+        <div id="paletteDiv"></div>
+        <div class="panel-head">
+          <h3 class="panel-title">n8n / YAML Preview</h3>
+        </div>
+        <textarea id="n8nInput" spellcheck="false" placeholder="n8n workflow JSON または YAML Preview"></textarea>
+        <div class="hint">n8n JSON を貼り付けて BPMN 化、または YAML Export で GitHub Issue に埋め込めます。</div>
+      </aside>
+
+      <section class="panel canvas-wrap">
+        <div class="panel-head">
+          <h2 class="panel-title">BPMN Canvas</h2>
+          <span id="stats" style="font-size:12px;color:#536167;">nodes: 0 / links: 0</span>
+        </div>
+        <div id="diagramDiv"></div>
+        <div class="stats">Lane color: Human = blue, AI = violet. GitHub Issue 作成でリモート AI に自動委譲できます。</div>
+      </section>
+
+      <aside class="panel">
+        <div class="panel-head">
+          <h2 class="panel-title">Node Inspector</h2>
+        </div>
+        <div class="field">
+          <label for="nodeText">Text</label>
+          <input id="nodeText" type="text" />
+        </div>
+        <div class="field">
+          <label for="nodeRole">Role</label>
+          <select id="nodeRole">
+            <option value="Human">Human</option>
+            <option value="AI">AI</option>
+            <option value="Shared">Shared</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="nodeNote">Note</label>
+          <textarea id="nodeNote" rows="6" placeholder="運用メモ / 会話メモ"></textarea>
+        </div>
+        <div class="toolbar" style="border-top:1px solid var(--line);">
+          <button id="saveNodeBtn" class="btn-main">ノード更新</button>
+        </div>
+        <pre id="detailJson">{}</pre>
+      </aside>
+    </section>
+  </main>
+
+  <!-- GitHub Issue Dialog -->
+  <div id="githubDialog" class="dialog-overlay">
+    <div class="dialog-box">
+      <h3 class="dialog-title">🚀 GitHub Issue 作成</h3>
+      <div class="dialog-field">
+        <label for="issueTitle">Issue タイトル *</label>
+        <input id="issueTitle" type="text" placeholder="例: 🔧 Implement BPMN Workflow Automation" />
+      </div>
+      <div class="dialog-field">
+        <label for="issueRepo">Repository *</label>
+        <select id="issueRepo">
+          <option value="kenichimiyata/ai-automation-dashboard">kenichimiyata/ai-automation-dashboard</option>
+          <option value="bpmbox/ai-automation-platform">bpmbox/ai-automation-platform</option>
+          <option value="kenichimiyata/ai-automation-docs">kenichimiyata/ai-automation-docs</option>
+        </select>
+      </div>
+      <div class="dialog-field">
+        <label for="issueLabels">Labels (カンマ区切り)</label>
+        <input id="issueLabels" type="text" placeholder="例: bpmn-workflow, automation" value="bpmn-workflow" />
+      </div>
+      <div class="dialog-field">
+        <label for="githubToken">GitHub Token *</label>
+        <input id="githubToken" type="password" placeholder="ghp_xxxxxxxxxxxx" />
+      </div>
+      <div class="dialog-actions">
+        <button class="btn-sub" onclick="closeGitHubDialog()">キャンセル</button>
+        <button class="btn-github" onclick="submitGitHubIssue()">Issue 作成</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const $ = go.GraphObject.make;
+    const n8nInput = document.getElementById("n8nInput");
+    const statsEl = document.getElementById("stats");
+    const statusDiv = document.getElementById("status");
+    const nodeText = document.getElementById("nodeText");
+    const nodeRole = document.getElementById("nodeRole");
+    const nodeNote = document.getElementById("nodeNote");
+    const detailJson = document.getElementById("detailJson");
+
+    const HUMAN_Y = 170;
+    const AI_Y = 320;
+
+    function laneY(role) {
+      return role === "AI" ? AI_Y : HUMAN_Y;
+    }
+
+    function setStatus(msg, type = "") {
+      statusDiv.textContent = msg;
+      statusDiv.className = type;
+    }
+
+    const diagram = $(go.Diagram, "diagramDiv", {
+      "undoManager.isEnabled": true,
+      layout: $(go.TreeLayout, { angle: 0, layerSpacing: 110, nodeSpacing: 20 }),
+      model: new go.GraphLinksModel()
+    });
+
+    diagram.nodeTemplateMap.add("Start",
+      $(go.Node, "Auto",
+        { locationSpot: go.Spot.Center },
+        new go.Binding("location", "loc", go.Point.parse).makeTwoWay(go.Point.stringify),
+        $(go.Shape, "Circle",
+          { width: 38, height: 38, strokeWidth: 2 },
+          new go.Binding("fill", "role", (r) => r === "AI" ? "#e9d5f5" : "#cce4f7"),
+          new go.Binding("stroke", "role", (r) => r === "AI" ? "#a13db6" : "#2c7fb8")
+        ),
+        $(go.TextBlock,
+          { font: "bold 12px 'IBM Plex Sans JP', sans-serif", margin: 4 },
+          new go.Binding("text", "text")
+        )
+      )
+    );
+
+    diagram.nodeTemplateMap.add("Task",
+      $(go.Node, "Auto",
+        { locationSpot: go.Spot.Center },
+        new go.Binding("location", "loc", go.Point.parse).makeTwoWay(go.Point.stringify),
+        $(go.Shape, "RoundedRectangle",
+          { strokeWidth: 2, minSize: new go.Size(140, 54) },
+          new go.Binding("fill", "role", (r) => r === "AI" ? "#f3e8fa" : "#e0f2fe"),
+          new go.Binding("stroke", "role", (r) => r === "AI" ? "#a13db6" : "#2c7fb8")
+        ),
+        $(go.Panel, "Vertical",
+          $(go.TextBlock,
+            { font: "500 13px 'IBM Plex Sans JP', sans-serif", margin: 6 },
+            new go.Binding("text", "text")
+          ),
+          $(go.TextBlock,
+            { font: "11px Consolas, monospace", stroke: "#5b666d" },
+            new go.Binding("text", "meta")
+          )
+        )
+      )
+    );
+
+    diagram.nodeTemplateMap.add("Gateway",
+      $(go.Node, "Auto",
+        { locationSpot: go.Spot.Center },
+        new go.Binding("location", "loc", go.Point.parse).makeTwoWay(go.Point.stringify),
+        $(go.Shape, "Diamond",
+          { width: 52, height: 52, strokeWidth: 2, fill: "#fef3c7", stroke: "#b45309" }
+        ),
+        $(go.TextBlock,
+          { font: "bold 12px 'IBM Plex Sans JP', sans-serif", margin: 4 },
+          new go.Binding("text", "text")
+        )
+      )
+    );
+
+    diagram.nodeTemplateMap.add("End",
+      $(go.Node, "Auto",
+        { locationSpot: go.Spot.Center },
+        new go.Binding("location", "loc", go.Point.parse).makeTwoWay(go.Point.stringify),
+        $(go.Shape, "Circle",
+          { width: 38, height: 38, strokeWidth: 4.5, fill: "#e8f4f2", stroke: "#1fa692" }
+        ),
+        $(go.TextBlock,
+          { font: "bold 12px 'IBM Plex Sans JP', sans-serif", margin: 4 },
+          new go.Binding("text", "text")
+        )
+      )
+    );
+
+    diagram.linkTemplate =
+      $(go.Link,
+        { routing: go.Routing.AvoidsNodes, corner: 8, curve: go.Curve.JumpGap },
+        $(go.Shape, { stroke: "#2e3f46", strokeWidth: 1.35 }),
+        $(go.Shape, { toArrow: "Standard", fill: "#2e3f46", stroke: null })
+      );
+
+    const palette = $(go.Palette, "paletteDiv", {
+      nodeTemplateMap: diagram.nodeTemplateMap,
+      model: new go.GraphLinksModel([
+        { key: "Start", text: "Start", category: "Start", role: "Human", meta: "start" },
+        { key: "HumanTask", text: "Human Task", category: "Task", role: "Human", meta: "task" },
+        { key: "AITask", text: "AI Task", category: "Task", role: "AI", meta: "task" },
+        { key: "Gateway", text: "Decision", category: "Gateway", role: "Shared", meta: "gateway" },
+        { key: "End", text: "End", category: "End", role: "Human", meta: "end" }
+      ])
+    });
+
+    function modelStats() {
+      const m = diagram.model;
+      statsEl.textContent = `nodes: ${m.nodeDataArray.length} / links: ${m.linkDataArray.length}`;
+    }
+
+    function assignInspector(data) {
+      if (!data) {
+        nodeText.value = "";
+        nodeRole.value = "Human";
+        nodeNote.value = "";
+        detailJson.textContent = "{}";
+        return;
+      }
+      nodeText.value = data.text || "";
+      nodeRole.value = data.role || "Human";
+      nodeNote.value = data.note || "";
+      detailJson.textContent = JSON.stringify(data, null, 2);
+    }
+
+    diagram.addDiagramListener("ChangedSelection", () => {
+      const node = diagram.selection.first();
+      if (!node || !node.data) {
+        assignInspector(null);
+        return;
+      }
+      assignInspector(node.data);
+    });
+
+    document.getElementById("saveNodeBtn").addEventListener("click", () => {
+      const node = diagram.selection.first();
+      if (!node || !node.data) {
+        setStatus("先にノードを選択してください。", "warn");
+        return;
+      }
+
+      diagram.startTransaction("update node");
+      diagram.model.setDataProperty(node.data, "text", nodeText.value.trim() || "Task");
+      diagram.model.setDataProperty(node.data, "role", nodeRole.value);
+      diagram.model.setDataProperty(node.data, "note", nodeNote.value);
+      diagram.model.setDataProperty(node.data, "loc", `${node.location.x} ${laneY(nodeRole.value)}`);
+      diagram.commitTransaction("update node");
+      assignInspector(node.data);
+      setStatus("ノードを更新しました。", "ok");
+    });
+
+    function seedCollaborationModel() {
+      const model = new go.GraphLinksModel(
+        [
+          { key: "S", category: "Start", text: "Issue Input", role: "Human", meta: "start", loc: `120 ${HUMAN_Y}` },
+          { key: "H1", category: "Task", text: "Human: intent clarify", role: "Human", meta: "analysis", loc: `330 ${HUMAN_Y}` },
+          { key: "A1", category: "Task", text: "AI: draft automation plan", role: "AI", meta: "planning", loc: `560 ${AI_Y}` },
+          { key: "G1", category: "Gateway", text: "Agree?", role: "Shared", meta: "decision", loc: `790 ${HUMAN_Y}` },
+          { key: "A2", category: "Task", text: "AI: execute workflow", role: "AI", meta: "execution", loc: `1020 ${AI_Y}` },
+          { key: "H2", category: "Task", text: "Human: validate result", role: "Human", meta: "review", loc: `1240 ${HUMAN_Y}` },
+          { key: "E", category: "End", text: "Knowledge saved", role: "Human", meta: "end", loc: `1460 ${HUMAN_Y}` }
+        ],
+        [
+          { from: "S", to: "H1" },
+          { from: "H1", to: "A1" },
+          { from: "A1", to: "G1" },
+          { from: "G1", to: "A2" },
+          { from: "A2", to: "H2" },
+          { from: "H2", to: "E" }
+        ]
+      );
+
+      diagram.model = model;
+      modelStats();
+      setStatus("Human + AI 協働BPMNを作成しました。", "ok");
+    }
+
+    function mapN8nTypeToCategory(nodeType) {
+      const t = String(nodeType || "");
+      if (t.includes("webhook") || t.includes("trigger")) return "Start";
+      if (t.includes("if") || t.includes("switch")) return "Gateway";
+      return "Task";
+    }
+
+    function mapN8nTypeToRole(nodeType) {
+      const t = String(nodeType || "");
+      if (t.includes("manual") || t.includes("form") || t.includes("webhook")) return "Human";
+      return "AI";
+    }
+
+    function convertN8nToBpmn(json) {
+      const nodes = Array.isArray(json.nodes) ? json.nodes : [];
+      const nodeData = [];
+      const linkData = [];
+
+      nodes.forEach((n, idx) => {
+        const role = mapN8nTypeToRole(n.type);
+        nodeData.push({
+          key: String(n.id || n.name || `n-${idx}`),
+          category: mapN8nTypeToCategory(n.type),
+          text: n.name || String(n.id || `node-${idx}`),
+          role,
+          meta: n.type || "n8n-node",
+          note: "",
+          raw: n,
+          loc: `${180 + idx * 220} ${laneY(role)}`
+        });
+      });
+
+      const con = json.connections || {};
+      Object.keys(con).forEach((from) => {
+        const mains = con[from] && con[from].main;
+        if (!Array.isArray(mains)) return;
+        mains.forEach((g) => {
+          if (!Array.isArray(g)) return;
+          g.forEach((item) => {
+            if (!item || !item.node) return;
+            linkData.push({ from: String(from), to: String(item.node) });
+          });
+        });
+      });
+
+      return new go.GraphLinksModel(nodeData, linkData);
+    }
+
+    function diagramToCanonicalModel() {
+      const nodes = (diagram.model.nodeDataArray || []).map((n) => {
+        const p = go.Point.parse(n.loc || "0 0");
+        return {
+          id: String(n.key),
+          label: n.text || String(n.key),
+          kind: n.category || "Task",
+          role: n.role || "Shared",
+          note: n.note || "",
+          pos: { x: Math.round(p.x), y: Math.round(p.y) },
+          meta: n.meta || "",
+          rawType: n.raw && n.raw.type ? n.raw.type : ""
+        };
+      });
+
+      const edges = (diagram.model.linkDataArray || []).map((l, i) => ({
+        id: `e-${i + 1}`,
+        from: String(l.from),
+        to: String(l.to),
+        label: l.text || ""
+      }));
+
+      return {
+        schema: "ai-bpmn-model/v1",
+        metadata: {
+          exportedAt: new Date().toISOString(),
+          source: "bpmn-designer-github"
+        },
+        nodes,
+        edges
+      };
+    }
+
+    function canonicalToYAML(canonical) {
+      const indent = (level) => "  ".repeat(level);
+      let yaml = `# BPMN Workflow - ${canonical.metadata.exportedAt}\n`;
+      yaml += `# Exported from: ${canonical.metadata.source}\n\n`;
+      yaml += `schema: ${canonical.schema}\n\n`;
+      yaml += `metadata:\n`;
+      yaml += `${indent(1)}exportedAt: ${canonical.metadata.exportedAt}\n`;
+      yaml += `${indent(1)}source: ${canonical.metadata.source}\n\n`;
+      
+      yaml += `nodes:\n`;
+      canonical.nodes.forEach((node) => {
+        yaml += `${indent(1)}- id: ${node.id}\n`;
+        yaml += `${indent(2)}label: "${node.label}"\n`;
+        yaml += `${indent(2)}kind: ${node.kind}\n`;
+        yaml += `${indent(2)}role: ${node.role}\n`;
+        if (node.note) yaml += `${indent(2)}note: "${node.note}"\n`;
+        yaml += `${indent(2)}pos:\n`;
+        yaml += `${indent(3)}x: ${node.pos.x}\n`;
+        yaml += `${indent(3)}y: ${node.pos.y}\n`;
+        if (node.meta) yaml += `${indent(2)}meta: ${node.meta}\n`;
+        if (node.rawType) yaml += `${indent(2)}rawType: ${node.rawType}\n`;
+      });
+
+      yaml += `\nedges:\n`;
+      canonical.edges.forEach((edge) => {
+        yaml += `${indent(1)}- id: ${edge.id}\n`;
+        yaml += `${indent(2)}from: ${edge.from}\n`;
+        yaml += `${indent(2)}to: ${edge.to}\n`;
+        if (edge.label) yaml += `${indent(2)}label: "${edge.label}"\n`;
+      });
+
+      return yaml;
+    }
+
+    function canonicalToDiagramModel(canonical) {
+      const nodes = Array.isArray(canonical.nodes) ? canonical.nodes : [];
+      const edges = Array.isArray(canonical.edges) ? canonical.edges : [];
+
+      const nodeData = nodes.map((n, idx) => {
+        const x = n.pos && typeof n.pos.x === "number" ? n.pos.x : 180 + idx * 220;
+        const role = n.role || "Shared";
+        const y = n.pos && typeof n.pos.y === "number" ? n.pos.y : laneY(role);
+        return {
+          key: String(n.id || `n-${idx}`),
+          category: n.kind || "Task",
+          text: n.label || String(n.id || `node-${idx}`),
+          role,
+          meta: n.meta || "",
+          note: n.note || "",
+          loc: `${x} ${y}`
+        };
+      });
+
+      const linkData = edges
+        .filter((e) => e && e.from && e.to)
+        .map((e) => ({ from: String(e.from), to: String(e.to), text: e.label || "" }));
+
+      return new go.GraphLinksModel(nodeData, linkData);
+    }
+
+    function canonicalToN8n(canonical) {
+      const nodes = (canonical.nodes || []).map((n, idx) => ({
+        id: n.id,
+        name: n.label,
+        type: n.rawType || (n.role === "Human" ? "n8n-nodes-base.webhook" : "n8n-nodes-base.httpRequest"),
+        position: [n.pos.x, n.pos.y],
+        parameters: {},
+        typeVersion: 1
+      }));
+
+      const connections = {};
+      (canonical.edges || []).forEach((e) => {
+        if (!connections[e.from]) connections[e.from] = { main: [[]] };
+        connections[e.from].main[0].push({ node: e.to, type: "main", index: 0 });
+      });
+
+      return { nodes, connections };
+    }
+
+    document.getElementById("newBtn").addEventListener("click", () => {
+      diagram.model = new go.GraphLinksModel();
+      modelStats();
+      setStatus("新しいBPMNを開始しました。", "ok");
+    });
+
+    document.getElementById("seedBtn").addEventListener("click", seedCollaborationModel);
+
+    document.getElementById("applyN8nBtn").addEventListener("click", () => {
+      try {
+        const json = JSON.parse(n8nInput.value);
+        diagram.model = convertN8nToBpmn(json);
+        modelStats();
+        setStatus("n8n JSON を BPMN へ変換しました。", "ok");
+      } catch (err) {
+        setStatus(`変換失敗: ${err.message}`, "warn");
+      }
+    });
+
+    document.getElementById("exportBtn").addEventListener("click", () => {
+      const blob = new Blob([diagram.model.toJson()], { type: "application/json" });
+      const a = document.createElement("a");
+      a.href = URL.createObjectURL(blob);
+      a.download = "bpmn-human-ai-model.json";
+      a.click();
+      setStatus("BPMN JSON を書き出しました。", "ok");
+    });
+
+    document.getElementById("exportCanonicalBtn").addEventListener("click", () => {
+      const canonical = diagramToCanonicalModel();
+      const canonicalText = JSON.stringify(canonical, null, 2);
+      n8nInput.value = canonicalText;
+
+      const blob = new Blob([canonicalText], { type: "application/json" });
+      const a = document.createElement("a");
+      a.href = URL.createObjectURL(blob);
+      a.download = "ai-bpmn-canonical-model.json";
+      a.click();
+      setStatus("共通JSONモデルを書き出しました。", "ok");
+    });
+
+    document.getElementById("exportYAMLBtn").addEventListener("click", () => {
+      const canonical = diagramToCanonicalModel();
+      const yamlText = canonicalToYAML(canonical);
+      n8nInput.value = yamlText;
+
+      const blob = new Blob([yamlText], { type: "text/yaml" });
+      const a = document.createElement("a");
+      a.href = URL.createObjectURL(blob);
+      a.download = "bpmn-workflow.yaml";
+      a.click();
+      setStatus("YAML を書き出しました。", "ok");
+    });
+
+    document.getElementById("importCanonicalBtn").addEventListener("click", () => {
+      try {
+        const parsed = JSON.parse(n8nInput.value);
+        if (parsed.schema !== "ai-bpmn-model/v1") {
+          setStatus("共通JSON(schema: ai-bpmn-model/v1)ではありません。", "warn");
+          return;
+        }
+        diagram.model = canonicalToDiagramModel(parsed);
+        modelStats();
+        setStatus("共通JSONモデルを読み込みました。", "ok");
+      } catch (err) {
+        setStatus(`読込失敗: ${err.message}`, "warn");
+      }
+    });
+
+    document.getElementById("exportN8nBtn").addEventListener("click", () => {
+      const canonical = diagramToCanonicalModel();
+      const n8n = canonicalToN8n(canonical);
+      const n8nText = JSON.stringify(n8n, null, 2);
+      n8nInput.value = n8nText;
+
+      const blob = new Blob([n8nText], { type: "application/json" });
+      const a = document.createElement("a");
+      a.href = URL.createObjectURL(blob);
+      a.download = "converted-to-n8n-workflow.json";
+      a.click();
+      setStatus("n8n JSON を書き出しました。", "ok");
+    });
+
+    document.getElementById("jsonFile").addEventListener("change", (ev) => {
+      const file = ev.target.files[0];
+      if (!file) return;
+
+      file.text().then((txt) => {
+        n8nInput.value = txt;
+        setStatus("JSONを読み込みました。n8nをBPMN化 を押してください。", "ok");
+      }).catch((err) => {
+        setStatus(`ファイル読込失敗: ${err.message}`, "warn");
+      });
+    });
+
+    // GitHub Integration
+    document.getElementById("createGitHubIssueBtn").addEventListener("click", () => {
+      document.getElementById("githubDialog").classList.add("active");
+    });
+
+    function closeGitHubDialog() {
+      document.getElementById("githubDialog").classList.remove("active");
+    }
+
+    async function submitGitHubIssue() {
+      const title = document.getElementById("issueTitle").value.trim();
+      const repo = document.getElementById("issueRepo").value;
+      const labelsStr = document.getElementById("issueLabels").value.trim();
+      const token = document.getElementById("githubToken").value.trim();
+
+      if (!title) {
+        alert("Issue タイトルを入力してください。");
+        return;
+      }
+
+      if (!token) {
+        alert("GitHub Token を入力してください。");
+        return;
+      }
+
+      setStatus("GitHub Issue を作成中...", "");
+
+      try {
+        const canonical = diagramToCanonicalModel();
+        const yamlText = canonicalToYAML(canonical);
+
+        const body = `## 🚀 BPMN Workflow Implementation Request
+
+このIssueは **BPMN Designer** から自動生成されました。
+
+### 📋 Workflow Definition (YAML)
+
+\`\`\`yaml
+${yamlText}
+\`\`\`
+
+### 🎯 Implementation Instructions
+
+1. 上記 YAML を GitHub Actions Workflow (`.github/workflows/*.yml`) に変換
+2. \`nodes\` を \`jobs\` にマッピング
+3. \`edges\` の依存関係を \`needs\` で表現
+4. \`role: AI\` タスクは自動実行、\`role: Human\` タスクは手動トリガー
+
+### ✅ Completion Checklist
+
+- [ ] YAML → GitHub Actions 変換完了
+- [ ] Workflow 動作確認（テストIssue作成）
+- [ ] ドキュメント更新
+- [ ] PR作成
+
+---
+**Generated by:** BPMN Designer with GitHub Integration
+**Timestamp:** ${new Date().toISOString()}
+`;
+
+        const labels = labelsStr ? labelsStr.split(",").map(l => l.trim()).filter(Boolean) : [];
+
+        const response = await fetch(`https://api.github.com/repos/${repo}/issues`, {
+          method: "POST",
+          headers: {
+            "Authorization": `Bearer ${token}`,
+            "Content-Type": "application/json",
+            "Accept": "application/vnd.github.v3+json"
+          },
+          body: JSON.stringify({ title, body, labels })
+        });
+
+        if (!response.ok) {
+          const errorData = await response.json();
+          throw new Error(`GitHub API Error: ${errorData.message || response.statusText}`);
+        }
+
+        const issue = await response.json();
+        setStatus(`✅ Issue #${issue.number} 作成成功！`, "ok");
+
+        // Open Issue URL
+        window.open(issue.html_url, "_blank");
+
+        // Reset dialog
+        closeGitHubDialog();
+        document.getElementById("issueTitle").value = "";
+        document.getElementById("githubToken").value = "";
+
+      } catch (err) {
+        setStatus(`❌ Issue 作成失敗: ${err.message}`, "warn");
+        alert(`Issue 作成失敗:\n${err.message}`);
+      }
+    }
+
+    // Initialize
+    seedCollaborationModel();
+  </script>
+</body>
+</html>
