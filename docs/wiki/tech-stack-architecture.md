@@ -159,6 +159,129 @@ graph TB
 
 ---
 
+## GitHub Actions ワークフロー構造
+
+### プロジェクト横断ワークフロー一覧
+
+```
+C:\xampp\htdocs\
+├── 🤖 AI Automation Platform
+│   ├── ai-automation-dashboard/
+│   │   └── .github/workflows/
+│   │       ├── sync-issues.yml           ⭐ メインワークフロー
+│   │       ├── test.yml                  # pytest 自動テスト
+│   │       └── bpmn-flow-demo.yml        # BPMN デモ
+│   │
+│   ├── ai-automation-docs/               # GitHub Pages 自動ビルド
+│   └── ai-automation-platform/           # Wiki/Project 管理
+│
+├── 🔧 PHPRunner 11
+│   └── PhPRunner_11/
+│       └── .github/workflows/
+│           ├── auto-assign-copilot.yml   ⭐ Copilot 自動割り当て
+│           ├── cloud-agent.yml           ⭐ Cloud Agent タスク実行
+│           ├── notify-issue-to-googlechat.yml
+│           ├── notify-issue-card-to-googlechat.yml
+│           ├── deploy-n8n-workflows.yml
+│           └── create-issue-via-dispatch.yml
+│
+├── 🛍️ ECサイト
+│   └── shop11/
+│       └── .github/workflows/
+│           ├── test.yml
+│           ├── monitor-pages.yml         # ページ監視
+│           ├── capture-screenshot.yml    # 自動スクリーンショット
+│           └── capture-on-error.yml      # エラー時キャプチャ
+│
+└── 🏗️ ローカル開発
+    └── localProject/AUTOCREATER/
+        └── .github/workflows/
+            ├── ai-automation.yml
+            ├── deploy-to-huggingface.yml
+            └── (他多数)
+```
+
+### 主要ワークフロー詳細
+
+#### 1. sync-issues.yml (ai-automation-dashboard) ⭐
+
+**機能:** GitHub Issue → Supabase → VS Code Copilot 完全自動連携
+
+**トリガー:** `issues: [opened, closed, edited, deleted]`
+
+**ジョブフロー:**
+```mermaid
+graph LR
+    A[Issue Created] --> B[Issue Type Check]
+    B --> C{Type?}
+    C -->|Milestone| D[High Priority]
+    C -->|Bug| E[Urgent]
+    C -->|Feature| F[Normal]
+    D --> G[Supabase Sync]
+    E --> G
+    F --> G
+    G --> H[Google Chat Notify]
+    G --> I[VS Code Realtime]
+```
+
+**実装済み機能:**
+- ✅ Issue 種別判定（Milestone/Bug/通常）
+- ✅ Supabase `github_issues` テーブルに自動同期
+- ✅ Google Chat 通知
+- ✅ VS Code Realtime 通知
+
+**計画中の機能:**
+- 🔲 AI Agent 自動割り当て (Milestone 3)
+- 🔲 Copilot Bot 自動アサイン (PhPRunner_11 から統合)
+
+#### 2. auto-assign-copilot.yml (PhPRunner_11)
+
+**機能:** Issue 作成時に Copilot Bot を自動アサイン
+
+**トリガー:** `issues: [opened]`
+
+**技術:**
+- GitHub CLI (`gh issue edit --add-assignee Copilot`)
+- GraphQL API (`addAssigneesToAssignable` mutation)
+- Bot Node ID: `BOT_kgDOC9w8XQ`
+
+**統合予定:** sync-issues.yml に統合
+
+#### 3. cloud-agent.yml (PhPRunner_11)
+
+**機能:** Issue コメントから直接タスク実行
+
+**トリガー:** `issue_comment: [created]`
+
+**コマンド例:**
+- `/execute list-events` - ファイル一覧
+- `/run fix-bug` - 自動修正実行
+
+**用途:** VS Code Copilot からの直接コマンド実行
+
+### ワークフロー統合計画
+
+**現状:**
+```
+ai-automation-dashboard/sync-issues.yml: Issue → Supabase → 通知
+PhPRunner_11/auto-assign-copilot.yml: Issue → Copilot 割り当て
+```
+
+**統合後:**
+```
+ai-automation-dashboard/sync-issues.yml:
+  1. Issue Type Check
+  2. Supabase Sync
+  3. AI Agent Assignment (NEW)
+  4. Copilot Auto-Assign (NEW from PhPRunner_11)
+  5. Google Chat Notify
+  6. VS Code Realtime
+```
+
+**詳細:** [Workflow Architecture](../workflow-architecture) 参照
+
+---
+
 ## データフロー詳細図
 
 ```mermaid
@@ -229,6 +352,8 @@ mindmap
 ## 関連ページ
 
 - [システムアーキテクチャ](System-Architecture)
+- [Workflow Architecture](../workflow-architecture) - ワークフロー構造詳細 ⭐ NEW
+- [Issue Auto-Assignment](../issue-auto-assignment-workflow) - Issue 自動割り当て（PDCA） ⭐ NEW
 - [Submodule 一覧](Submodule-List)
 - [クイックスタート](Quick-Start-Guide)
 - [プラットフォーム状態](AI-Automation-Platform-Status)
