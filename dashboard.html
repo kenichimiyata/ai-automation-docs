@@ -265,6 +265,10 @@
                 <div style="background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
                     <div class="mermaid">
 graph TB
+    subgraph WEBTOP["🌐 Webtop Desktop - Execution Body (Know & Do 統合)"]
+        W[🖥️ Cloud Desktop<br/>VS Code + Copilot<br/>Terminal + n8n<br/>24/7 Always-on]
+    end
+    
     subgraph PLAN["🎯 PLAN Phase - 設計と指示書作成"]
         A0[📐 BPMN Designer<br/>プロセス設計]
         A1[📝 GitHub Issue<br/>指示書作成]
@@ -325,6 +329,13 @@ graph TB
     M --> N
     N -.-> A0
     
+    W -.-> |支える| A0
+    W -.-> |実行| E
+    W -.-> |実行| I
+    W -.-> |実行| I5
+    
+    style WEBTOP fill:#c8e6c9,stroke:#2e7d32,stroke-width:4px
+    style W fill:#a5d6a7,stroke:#1b5e20,stroke-width:3px,color:#000
     style A0 fill:#ffe1f5
     style A1 fill:#fff4e1
     style A fill:#e1f5ff
