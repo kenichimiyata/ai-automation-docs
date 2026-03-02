@@ -252,6 +252,68 @@
                     </div>
                 </div>
                 
+                <h3 style="margin-top: 30px; margin-bottom: 15px; color: #667eea;">🔄 サービス連携フロー（PDCA全体像）</h3>
+                <div style="background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+                    <div class="mermaid">
+graph TB
+    subgraph PLAN["🎯 PLAN Phase"]
+        A[👤 Google Form<br/>人間入力]
+        B[🔄 n8n Workflow #1<br/>Issue生成]
+        C[🗄️ Supabase<br/>データ同期]
+        D[⚙️ GitHub Actions<br/>通知送信]
+    end
+    
+    subgraph DO["🚀 DO Phase"]
+        E[🤖 VS Code Copilot<br/>AI実装支援]
+        F[📐 BPMN Designer<br/>プロセス設計]
+        G[💾 GitHub<br/>コード管理]
+        H[🔄 n8n Workflow #3<br/>PR自動作成]
+    end
+    
+    subgraph CHECK["✅ CHECK Phase"]
+        I[⚙️ GitHub Actions<br/>pytest実行]
+        J[🗄️ Supabase<br/>結果記録]
+        K[📊 Mermaid Viewer<br/>フロー確認]
+    end
+    
+    subgraph ACT["🔁 ACT Phase"]
+        L[🔄 n8n Workflow #4<br/>Deploy実行]
+        M[🗺️ DHTMLX Navigator<br/>管理画面]
+        N[🗄️ Supabase<br/>履歴保存]
+    end
+    
+    A --> B
+    B --> C
+    C --> D
+    D --> E
+    E --> F
+    F --> G
+    G --> H
+    H --> I
+    I --> J
+    J --> K
+    K --> L
+    L --> M
+    M --> N
+    N -.-> A
+    
+    style A fill:#e1f5ff
+    style B fill:#f0e1ff
+    style C fill:#fff4e1
+    style D fill:#e1ffe1
+    style E fill:#e1f5ff
+    style F fill:#ffe1f5
+    style G fill:#e1ffe1
+    style H fill:#f0e1ff
+    style I fill:#e1ffe1
+    style J fill:#fff4e1
+    style K fill:#ffe1e1
+    style L fill:#f0e1ff
+    style M fill:#e1f5ff
+    style N fill:#fff4e1
+                    </div>
+                </div>
+                
                 <div class="grid">
                     <div class="card">
                         <h3>🗄️ Supabase<span class="badge active">Active</span></h3>
@@ -565,7 +627,18 @@
         </div>
     </div>
     
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
     <script>
+        mermaid.initialize({ 
+            startOnLoad: true,
+            theme: 'default',
+            flowchart: {
+                useMaxWidth: true,
+                htmlLabels: true,
+                curve: 'basis'
+            }
+        });
+        
         function showSection(sectionId) {
             // Hide all sections
             document.querySelectorAll('.section').forEach(section => {
@@ -582,6 +655,13 @@
             
             // Add active class to clicked nav item
             event.target.classList.add('active');
+            
+            // Re-render mermaid diagrams
+            if (sectionId === 'services') {
+                setTimeout(() => {
+                    mermaid.contentLoaded();
+                }, 100);
+            }
         }
     </script>
 </body>
